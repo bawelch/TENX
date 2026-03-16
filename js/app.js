@@ -324,38 +324,45 @@
     }
 
     function renderBoard(correctAnswers) {
+        const question = getQuestion(state.questionId);
+        const isFailedReveal = state.finished && !state.solved;
+
         els.list.innerHTML = correctAnswers.map((_, index) => {
             const guess = state.guesses[index];
             const status = state.statuses[index];
             const locked = state.locked[index];
-            const question = getQuestion(state.questionId);
 
-            const statusText = status === "green"
-                ? getCorrectTagText(question, index)
-                : status === "yellow"
-                    ? getDirectionLabel(guess, index, correctAnswers)
-                    : status === "red"
-                        ? "Wrong"
-                        : "";
+            const statusText = isFailedReveal && status !== "green"
+                ? `${correctAnswers[index]}${getCorrectTagText(question, index) !== "Locked" ? ` - ${getCorrectTagText(question, index)}` : ""}`
+                : status === "green"
+                    ? getCorrectTagText(question, index)
+                    : status === "yellow"
+                        ? getDirectionLabel(guess, index, correctAnswers)
+                        : status === "red"
+                            ? "Wrong"
+                            : "";
+
             const classes = [`state-${status}`];
-            if (status !== "empty") classes.push("has-status");
+            if (status !== "empty" || (isFailedReveal && status !== "green")) {
+                classes.push("has-status");
+            }
 
             return `
-        <div class="${classes.join(" ")}">
-          <div class="row">
-            <div class="rank">${index + 1}</div>
-            <button
-              class="slot ${locked ? "locked" : ""} ${state.finished ? "disabled" : ""}"
-              data-index="${index}"
-              type="button"
-              ${locked || state.finished ? "disabled" : ""}
-            >
-              <span class="slot-text ${guess ? "" : "placeholder"}">${guess || "Choose an answer"}</span>
-              <span class="status-tag">${statusText}</span>
-            </button>
-          </div>
+      <div class="${classes.join(" ")}">
+        <div class="row">
+          <div class="rank">${index + 1}</div>
+          <button
+            class="slot ${locked ? "locked" : ""} ${state.finished ? "disabled" : ""}"
+            data-index="${index}"
+            type="button"
+            ${locked || state.finished ? "disabled" : ""}
+          >
+            <span class="slot-text ${guess ? "" : "placeholder"}">${guess || "Choose an answer"}</span>
+            <span class="status-tag">${statusText}</span>
+          </button>
         </div>
-      `;
+      </div>
+    `;
         }).join("");
 
         els.list.querySelectorAll(".slot[data-index]").forEach((button) => {
