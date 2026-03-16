@@ -58,17 +58,17 @@ body {
     margin: 0 0 10px 0;
 }
 
-.topbar {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr auto auto;
-    gap: 12px;
-    margin-bottom: 18px;
-    align-items: end;
+.header-block {
+    margin-bottom: 20px;
 }
 
-.control-group {
-    display: grid;
-    gap: 8px;
+.section-label {
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.76rem;
+    font-weight: 700;
+    margin-bottom: 12px;
 }
 
 label {
@@ -129,14 +129,14 @@ button {
     background: rgba(30, 41, 59, 0.8);
     color: var(--text);
     padding: 12px 14px;
-    align-self: end;
-}
-
-.button-link {
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+}
+
+.button-link {
+    text-decoration: none;
 }
 
 h1, h2, h3, p {
@@ -159,69 +159,6 @@ h1 {
     color: var(--muted);
     font-size: 0.88rem;
     margin-top: 6px;
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    margin: 22px 0 18px;
-}
-
-.stat {
-    background: rgba(11, 16, 32, 0.88);
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    border-radius: 16px;
-    padding: 14px;
-}
-
-.stat-label {
-    display: block;
-    color: var(--muted);
-    font-size: 0.8rem;
-    margin-bottom: 6px;
-}
-
-.stat-value {
-    font-size: 1.18rem;
-    font-weight: 800;
-}
-
-.score-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    margin-bottom: 18px;
-}
-
-.score-card {
-    background: rgba(11, 16, 32, 0.88);
-    border: 1px solid rgba(148, 163, 184, 0.12);
-    border-radius: 16px;
-    padding: 14px;
-}
-
-    .score-card strong {
-        display: block;
-        color: var(--muted);
-        font-size: 0.8rem;
-        margin-bottom: 6px;
-    }
-
-    .score-card span {
-        font-size: 1.25rem;
-        font-weight: 800;
-    }
-
-.scoring-detail {
-    color: var(--muted);
-    line-height: 1.6;
-    font-size: 0.92rem;
-    background: rgba(11, 16, 32, 0.55);
-    border: 1px solid rgba(148, 163, 184, 0.08);
-    border-radius: 14px;
-    padding: 12px 14px;
-    margin-bottom: 18px;
 }
 
 .list {
@@ -330,11 +267,107 @@ h1 {
     display: flex;
     gap: 12px;
     margin-top: 22px;
+    margin-bottom: 22px;
 }
 
     .controls .button-primary {
         flex: 1;
     }
+
+.metrics-block {
+    display: grid;
+    gap: 14px;
+    margin-bottom: 18px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.stat {
+    background: rgba(11, 16, 32, 0.88);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 16px;
+    padding: 14px;
+}
+
+.stat-label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-bottom: 6px;
+}
+
+.stat-value {
+    font-size: 1.18rem;
+    font-weight: 800;
+}
+
+.score-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.score-card {
+    background: rgba(11, 16, 32, 0.88);
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 16px;
+    padding: 14px;
+}
+
+    .score-card strong {
+        display: block;
+        color: var(--muted);
+        font-size: 0.8rem;
+        margin-bottom: 6px;
+    }
+
+    .score-card span {
+        font-size: 1.25rem;
+        font-weight: 800;
+    }
+
+.utility-bar {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+.options-block,
+.debug-block {
+    background: rgba(11, 16, 32, 0.42);
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 18px;
+}
+
+.options-grid,
+.debug-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+}
+
+.control-group {
+    display: grid;
+    gap: 8px;
+}
+
+.scoring-detail {
+    color: var(--muted);
+    line-height: 1.6;
+    font-size: 0.92rem;
+    background: rgba(11, 16, 32, 0.55);
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    border-radius: 14px;
+    padding: 12px 14px;
+    margin-top: 12px;
+}
 
 .message {
     margin-top: 18px;
@@ -519,12 +552,6 @@ h1 {
     gap: 12px;
 }
 
-@media (max-width: 900px) {
-    .topbar {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
 @media (max-width: 720px) {
     body {
         padding: 14px;
@@ -534,9 +561,9 @@ h1 {
         padding: 18px;
     }
 
-    .topbar,
     .stats-grid,
-    .score-grid {
+    .score-grid,
+    .debug-grid {
         grid-template-columns: 1fr;
     }
 
@@ -554,6 +581,10 @@ h1 {
     }
 
     .controls {
+        flex-direction: column;
+    }
+
+    .utility-bar {
         flex-direction: column;
     }
 }

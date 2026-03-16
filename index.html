@@ -11,69 +11,84 @@
         <section class="panel main">
             <p class="eyebrow">Top-10 ranker</p>
 
-            <div class="topbar">
-                <div class="control-group">
-                    <label for="modeSelect">Mode</label>
-                    <select id="modeSelect"></select>
-                    <p id="modeDescription" class="microcopy"></p>
-                </div>
-
-                <div id="poolControlGroup" class="control-group">
-                    <label for="poolSelect">Answer pool</label>
-                    <select id="poolSelect"></select>
-                    <p id="poolCount" class="microcopy"></p>
-                </div>
-
-                <div id="questionControlGroup" class="control-group">
-                    <label for="questionSelect">Question</label>
-                    <select id="questionSelect"></select>
-                    <p id="questionCount" class="microcopy"></p>
-                </div>
-
-                <button id="randomQuestionBtn" class="button-ghost" type="button">Random question</button>
-                <a href="./rules.html" class="button-ghost button-link">Rules</a>
+            <div class="header-block">
+                <h1 id="questionTitle"></h1>
+                <p id="questionSubtitle" class="subtitle"></p>
             </div>
-
-            <h1 id="questionTitle"></h1>
-            <p id="questionSubtitle" class="subtitle"></p>
-
-            <div class="stats-grid">
-                <div class="stat">
-                    <span class="stat-label">Submits used</span>
-                    <span id="attemptsUsed" class="stat-value">0 / 5</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Locked in</span>
-                    <span id="lockedCount" class="stat-value">0 / 10</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-label">Eliminated answers</span>
-                    <span id="eliminatedCount" class="stat-value">0</span>
-                </div>
-            </div>
-
-            <div id="scoreGrid" class="score-grid">
-                <div class="score-card">
-                    <strong>Final board score</strong>
-                    <span id="finalBoardScore">0</span>
-                </div>
-                <div class="score-card">
-                    <strong>Discovery score</strong>
-                    <span id="discoveryScore">0</span>
-                </div>
-                <div class="score-card">
-                    <strong>Total</strong>
-                    <span id="totalScore">0</span>
-                </div>
-            </div>
-
-            <div id="scoringDetail" class="scoring-detail"></div>
 
             <div id="list" class="list"></div>
 
             <div class="controls">
                 <button id="submitBtn" class="button-primary" type="button">Submit guesses</button>
                 <button id="resetBtn" class="button-secondary" type="button">Reset question</button>
+            </div>
+
+            <div class="metrics-block">
+                <div class="stats-grid">
+                    <div class="stat">
+                        <span class="stat-label">Submits used</span>
+                        <span id="attemptsUsed" class="stat-value">0 / 5</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Locked in</span>
+                        <span id="lockedCount" class="stat-value">0 / 10</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Eliminated answers</span>
+                        <span id="eliminatedCount" class="stat-value">0</span>
+                    </div>
+                </div>
+
+                <div id="scoreGrid" class="score-grid">
+                    <div class="score-card">
+                        <strong>Final board score</strong>
+                        <span id="finalBoardScore">0</span>
+                    </div>
+                    <div class="score-card">
+                        <strong>Discovery score</strong>
+                        <span id="discoveryScore">0</span>
+                    </div>
+                    <div class="score-card">
+                        <strong>Total</strong>
+                        <span id="totalScore">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="utility-bar">
+                <a href="./rules.html" class="button-ghost button-link">Rules</a>
+                <button id="randomQuestionBtn" class="button-ghost" type="button">Random question</button>
+            </div>
+
+            <div class="options-block">
+                <div class="section-label">Options</div>
+                <div class="options-grid">
+                    <div class="control-group">
+                        <label for="modeSelect">Mode</label>
+                        <select id="modeSelect"></select>
+                        <p id="modeDescription" class="microcopy"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="debug-block">
+                <div class="section-label">Debug</div>
+
+                <div class="debug-grid">
+                    <div id="poolControlGroup" class="control-group">
+                        <label for="poolSelect">Answer pool</label>
+                        <select id="poolSelect"></select>
+                        <p id="poolCount" class="microcopy"></p>
+                    </div>
+
+                    <div id="questionControlGroup" class="control-group">
+                        <label for="questionSelect">Question</label>
+                        <select id="questionSelect"></select>
+                        <p id="questionCount" class="microcopy"></p>
+                    </div>
+                </div>
+
+                <div id="scoringDetail" class="scoring-detail"></div>
             </div>
 
             <div id="message" class="message"></div>
