@@ -54,10 +54,15 @@
         activeIndex: null,
         finished: false,
         solved: false,
-        answerMilestones: {}
+        answerMilestones: {},
+        hp: 100,
+        maxHp: 100,
+        roundHpApplied: false,
     };
 
     const els = {
+        healthBar: document.getElementById("healthBar"),
+        healthReadout: document.getElementById("healthReadout"),
         modeSelect: document.getElementById("modeSelect"),
         modeDescription: document.getElementById("modeDescription"),
         poolControlGroup: document.getElementById("poolControlGroup"),
@@ -103,7 +108,24 @@
     function countWords(value) {
         return value.trim().split(/\s+/).filter(Boolean).length;
     }
+    function applyRoundHpChange() {
+        if (state.roundHpApplied) {
+            return;
+        }
 
+        const greenCount = state.statuses.filter((status) => status === "green").length;
+        const redCount = state.statuses.filter((status) => status === "red").length;
+        const delta = (greenCount * 2) - (redCount * 10);
+
+        state.hp = Math.max(0, Math.min(state.maxHp, state.hp + delta));
+        state.roundHpApplied = true;
+    }
+
+    function renderHealthBar() {
+        const hpPercent = state.maxHp > 0 ? (state.hp / state.maxHp) * 100 : 0;
+        els.healthBar.style.width = `${hpPercent}%`;
+        els.healthReadout.textContent = `${state.hp} / ${state.maxHp} HP`;
+    }
     function getNameStats(value) {
         const normalized = normaliseText(value);
         const letters = normalized.length;
@@ -273,6 +295,7 @@
         state.activeIndex = null;
         state.finished = false;
         state.solved = false;
+        state.roundHpApplied = false;
         initialiseMilestones();
         els.solutionWrap.classList.remove("show");
         setMessage("", "");
@@ -330,7 +353,7 @@
         const question = getQuestion(state.questionId);
         const correctAnswers = getCorrectAnswers(question);
         const mode = getModeConfig();
-
+        renderHealthBar();
         els.title.textContent = question.title;
         els.subtitle.textContent = question.description;
         els.attemptsUsed.textContent = `${state.attemptsUsed} / ${MAX_ATTEMPTS}`;
@@ -599,6 +622,7 @@
         if (solved) {
             state.solved = true;
             state.finished = true;
+            applyRoundHpChange();
             revealSolution(false);
             setMessage(
                 mode.scoring
@@ -608,6 +632,7 @@
             );
         } else if (attemptsLeft === 0) {
             state.finished = true;
+            applyRoundHpChange();
             revealSolution(true);
             setMessage(
                 mode.scoring

@@ -81,7 +81,8 @@ select, button, input {
     font: inherit;
 }
 
-select, input {
+select,
+input {
     width: 100%;
     background: rgba(11, 16, 32, 0.92);
     color: var(--text);
@@ -242,6 +243,7 @@ h2 {
     color: #f8fafc;
     opacity: 0;
     white-space: nowrap;
+    text-align: right;
 }
 
 .has-status .status-tag {
@@ -271,16 +273,72 @@ h2 {
     background: rgba(22, 163, 74, 0.18);
 }
 
-.controls {
-    display: flex;
-    gap: 10px;
+.controls-shell {
+    position: relative;
     margin-top: 14px;
     margin-bottom: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.12);
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(11, 16, 32, 0.5);
 }
-/*
+
+.health-track {
+    position: absolute;
+    inset: 0;
+    background: rgba(11, 16, 32, 0.72);
+}
+
+.health-bar {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 100%;
+    background: linear-gradient(90deg, rgba(22, 163, 74, 0.45), rgba(34, 197, 94, 0.78));
+    transition: width 0.35s ease;
+}
+
+.health-readout {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    z-index: 2;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.92);
+    pointer-events: none;
+}
+
+.controls {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1.61fr 1fr;
+    gap: 10px;
+    margin: 0;
+    padding: 18px 10px 10px;
+}
+
+    .controls button,
+    .controls .button-ghost {
+        width: 100%;
+        min-width: 0;
+    }
+
     .controls .button-primary {
-        flex: 1;
-    }*/
+        background: linear-gradient(135deg, rgba(37, 99, 235, 0.82), rgba(29, 78, 216, 0.82));
+        color: white;
+    }
+
+    .controls .button-secondary {
+        background: rgba(51, 65, 85, 0.78);
+        color: var(--text);
+    }
+
+    .controls .button-ghost {
+        background: rgba(30, 41, 59, 0.78);
+        color: var(--text);
+    }
 
 .metrics-block {
     display: grid;
@@ -531,6 +589,7 @@ h2 {
     color: #fef08a;
     text-transform: uppercase;
     letter-spacing: 0.08em;
+    text-align: right;
 }
 
 .picker-footer {
@@ -607,6 +666,7 @@ h2 {
         display: grid;
         grid-template-columns: 1fr 1.61fr 1fr;
         gap: 8px;
+        padding: 18px 8px 8px;
     }
 
         .controls button,
@@ -615,8 +675,13 @@ h2 {
             font-size: 0.9rem;
         }
 
+    .health-readout {
+        top: 5px;
+        right: 8px;
+        font-size: 0.66rem;
+    }
+
     .utility-bar {
         flex-direction: column;
     }
-}
 }
