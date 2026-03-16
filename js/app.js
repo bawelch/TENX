@@ -151,6 +151,10 @@
     }
 
     function getCorrectAnswers(question) {
+        if (Array.isArray(question.correctAnswers) && question.correctAnswers.length) {
+            return question.correctAnswers.slice();
+        }
+
         const pool = getPool(question.poolId);
         const ranked = pool.items
             .map((item) => ({ item, stats: getNameStats(item) }))
@@ -219,7 +223,15 @@
             };
         });
     }
-
+    function getCorrectTagText(question, index) {
+        if (Array.isArray(question.correctTexts)) {
+            const text = question.correctTexts[index];
+            if (typeof text === "string" && text.trim() !== "") {
+                return text.trim();
+            }
+        }
+        return "Locked";
+    }
     function resetGame() {
         const answers = getCorrectAnswers(getQuestion(state.questionId));
         state.guesses = Array(answers.length).fill("");
@@ -316,14 +328,15 @@
             const guess = state.guesses[index];
             const status = state.statuses[index];
             const locked = state.locked[index];
+            const question = getQuestion(state.questionId);
+
             const statusText = status === "green"
-                ? "Locked"
+                ? getCorrectTagText(question, index)
                 : status === "yellow"
                     ? getDirectionLabel(guess, index, correctAnswers)
                     : status === "red"
                         ? "Wrong"
                         : "";
-
             const classes = [`state-${status}`];
             if (status !== "empty") classes.push("has-status");
 
