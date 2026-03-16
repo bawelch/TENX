@@ -1,136 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Top 10 Ranker</title>
-  <link rel="stylesheet" href="./styles/main.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Top 10 Ranker</title>
+    <link rel="stylesheet" href="./styles/main.css" />
 </head>
 <body>
-  <div class="app">
-    <section class="panel main">
-      <p class="eyebrow">Top-10 ranker</p>
+    <div class="app">
+        <section class="panel main">
+            <p class="eyebrow">Top-10 ranker</p>
 
-      <div class="topbar">
-        <div class="control-group">
-          <label for="poolSelect">Answer pool</label>
-          <select id="poolSelect"></select>
-          <p id="poolCount" class="microcopy"></p>
-        </div>
+            <div class="topbar">
+                <div class="control-group">
+                    <label for="poolSelect">Answer pool</label>
+                    <select id="poolSelect"></select>
+                    <p id="poolCount" class="microcopy"></p>
+                </div>
 
-        <div class="control-group">
-          <label for="questionSelect">Question</label>
-          <select id="questionSelect"></select>
-          <p id="questionCount" class="microcopy"></p>
-        </div>
+                <div class="control-group">
+                    <label for="questionSelect">Question</label>
+                    <select id="questionSelect"></select>
+                    <p id="questionCount" class="microcopy"></p>
+                </div>
 
-        <button id="randomQuestionBtn" class="button-ghost" type="button">Random question</button>
-      </div>
+                <button id="randomQuestionBtn" class="button-ghost" type="button">Random question</button>
+            </div>
 
-      <h1 id="questionTitle"></h1>
-      <p id="questionSubtitle" class="subtitle"></p>
+            <h1 id="questionTitle"></h1>
+            <p id="questionSubtitle" class="subtitle"></p>
 
-      <div class="stats-grid">
-        <div class="stat">
-          <span class="stat-label">Submits used</span>
-          <span id="attemptsUsed" class="stat-value">0 / 5</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Locked in</span>
-          <span id="lockedCount" class="stat-value">0 / 10</span>
-        </div>
-        <div class="stat">
-          <span class="stat-label">Eliminated answers</span>
-          <span id="eliminatedCount" class="stat-value">0</span>
-        </div>
-      </div>
+            <div class="stats-grid">
+                <div class="stat">
+                    <span class="stat-label">Submits used</span>
+                    <span id="attemptsUsed" class="stat-value">0 / 5</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Locked in</span>
+                    <span id="lockedCount" class="stat-value">0 / 10</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Eliminated answers</span>
+                    <span id="eliminatedCount" class="stat-value">0</span>
+                </div>
+            </div>
 
-      <div class="score-grid">
-        <div class="score-card">
-          <strong>Final board score</strong>
-          <span id="finalBoardScore">0</span>
-        </div>
-        <div class="score-card">
-          <strong>Discovery score</strong>
-          <span id="discoveryScore">0</span>
-        </div>
-        <div class="score-card">
-          <strong>Total</strong>
-          <span id="totalScore">0</span>
-        </div>
-      </div>
+            <div class="score-grid">
+                <div class="score-card">
+                    <strong>Final board score</strong>
+                    <span id="finalBoardScore">0</span>
+                </div>
+                <div class="score-card">
+                    <strong>Discovery score</strong>
+                    <span id="discoveryScore">0</span>
+                </div>
+                <div class="score-card">
+                    <strong>Total</strong>
+                    <span id="totalScore">0</span>
+                </div>
+            </div>
 
-      <div id="scoringDetail" class="scoring-detail"></div>
+            <div id="scoringDetail" class="scoring-detail"></div>
 
-      <div id="list" class="list"></div>
+            <div id="list" class="list"></div>
 
-      <div class="controls">
-        <button id="submitBtn" class="button-primary" type="button">Submit guesses</button>
-        <button id="resetBtn" class="button-secondary" type="button">Reset question</button>
-      </div>
+            <div class="controls">
+                <button id="submitBtn" class="button-primary" type="button">Submit guesses</button>
+                <button id="resetBtn" class="button-secondary" type="button">Reset question</button>
+            </div>
 
-      <div id="message" class="message"></div>
-    </section>
+            <div id="message" class="message"></div>
+        </section>
 
-    <aside class="panel side">
-      <h2>Rules</h2>
-      <p class="helper">
-        Click a rank to choose from the answer pool. Green means correct answer in the correct position and it locks. Yellow means the answer belongs somewhere in the top 10, but not there. Grey means it is not in the current top 10 and will be removed from future choices.
-      </p>
+        <aside class="panel side">
+            <h2>Rules</h2>
+            <p class="helper">
+                Click a rank to choose from the answer pool. Green means correct answer in the correct position and it locks. Yellow means the answer belongs somewhere in the top 10, but not there. Red means it is not in the current top 10 and will be removed from future choices.
+            </p>
 
-      <div class="legend">
-        <div class="legend-item">
-          <span class="swatch green"></span>
-          <div><strong>Green</strong><br />Correct answer, correct rank, locked in place.</div>
-        </div>
-        <div class="legend-item">
-          <span class="swatch yellow"></span>
-          <div><strong>Yellow</strong><br />Correct answer set, wrong rank, prioritised in the picker.</div>
-        </div>
-        <div class="legend-item">
-          <span class="swatch grey"></span>
-          <div><strong>Grey</strong><br />Not in the current top 10, removed from future choices.</div>
-        </div>
-      </div>
+            <div class="legend">
+                <div class="legend-item">
+                    <span class="swatch green"></span>
+                    <div><strong>Green</strong><br />Correct answer, correct rank, locked in place.</div>
+                </div>
+                <div class="legend-item">
+                    <span class="swatch yellow"></span>
+                    <div><strong>Yellow</strong><br />Correct answer set, wrong rank, prioritised in the picker.</div>
+                </div>
+                <div class="legend-item">
+                    <span class="swatch red"></span>
+                    <div><strong>Red</strong><br />Not in the current top 10, removed from future choices.</div>
+                </div>
+            </div>
 
-      <div class="meta-list" style="margin-top: 18px;">
-        <div class="meta-item"><strong>Attempts</strong><br />You get 5 submits per question.</div>
-        <div class="meta-item"><strong>Scoring A</strong><br />Final board score depends on green, yellow and grey results on your last visible board state.</div>
-        <div class="meta-item"><strong>Scoring B</strong><br />Discovery score depends on which turn a correct answer first became yellow and which turn it first became green.</div>
-        <div class="meta-item"><strong>Data model</strong><br />Answer pools live centrally in one file; question definitions are generated separately and can be extended cleanly.</div>
-      </div>
+            <div class="meta-list" style="margin-top: 18px;">
+                <div class="meta-item"><strong>Attempts</strong><br />You get 5 submits per question.</div>
+                <div class="meta-item"><strong>Scoring A</strong><br />Final board score depends on green, yellow and red results on your last visible board state.</div>
+                <div class="meta-item"><strong>Scoring B</strong><br />Discovery score depends on which turn a correct answer first became yellow and which turn it first became green.</div>
+                <div class="meta-item"><strong>Data model</strong><br />Answer pools live centrally in one file; question definitions are generated separately and can be extended cleanly.</div>
+            </div>
 
-      <div id="solutionWrap" class="solution-wrap">
-        <h2>Correct order</h2>
-        <div id="solution" class="solution"></div>
-      </div>
-    </aside>
-  </div>
-
-  <div id="pickerOverlay" class="picker-overlay">
-    <div class="picker" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
-      <div class="picker-header">
-        <div id="pickerTitle" class="picker-title">Choose an answer</div>
-        <div id="pickerSubtitle" class="picker-subtitle"></div>
-      </div>
-
-      <div class="picker-search">
-        <input id="pickerSearch" type="text" placeholder="Search answer pool..." autocomplete="off" />
-      </div>
-
-      <div id="pickerOptions" class="picker-options"></div>
-
-      <div class="picker-footer">
-        <span id="pickerCount"></span>
-        <button id="closePickerBtn" class="button-secondary" type="button">Close</button>
-      </div>
+            <div id="solutionWrap" class="solution-wrap">
+                <h2>Correct order</h2>
+                <div id="solution" class="solution"></div>
+            </div>
+        </aside>
     </div>
-  </div>
 
-  <script src="./data/answer-pools.js"></script>
-  <script src="./data/question-templates.js"></script>
-  <script src="./data/questions.js"></script>
-  <script src="./js/scoring.js"></script>
-  <script src="./js/app.js"></script>
+    <div id="pickerOverlay" class="picker-overlay">
+        <div class="picker" role="dialog" aria-modal="true" aria-labelledby="pickerTitle">
+            <div class="picker-header">
+                <div id="pickerTitle" class="picker-title">Choose an answer</div>
+                <div id="pickerSubtitle" class="picker-subtitle"></div>
+            </div>
+
+            <div class="picker-search">
+                <input id="pickerSearch" type="text" placeholder="Search answer pool..." autocomplete="off" />
+            </div>
+
+            <div id="pickerOptions" class="picker-options"></div>
+
+            <div class="picker-footer">
+                <span id="pickerCount"></span>
+                <button id="closePickerBtn" class="button-secondary" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./data/answer-pools.js"></script>
+    <script src="./data/question-templates.js"></script>
+    <script src="./data/questions.js"></script>
+    <script src="./js/scoring.js"></script>
+    <script src="./js/app.js"></script>
 </body>
 </html>
