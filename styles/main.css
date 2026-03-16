@@ -47,28 +47,28 @@ body {
 }
 
 .main {
-    padding: 28px;
+    padding: 18px;
 }
 
 .eyebrow {
     color: #d2dceb;
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    font-size: 0.76rem;
-    margin: 0 0 10px 0;
+    font-size: 0.72rem;
+    margin: 0 0 6px 0;
 }
 
 .header-block {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .section-label {
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    font-size: 0.76rem;
+    font-size: 0.7rem;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 label {
@@ -144,15 +144,21 @@ h1, h2, h3, p {
 }
 
 h1 {
-    font-size: clamp(1.55rem, 2vw, 2.2rem);
-    line-height: 1.1;
-    margin-bottom: 8px;
+    font-size: clamp(1.2rem, 1.6vw, 1.7rem);
+    line-height: 1.08;
+    margin-bottom: 4px;
+}
+
+h2 {
+    font-size: 1.05rem;
+    line-height: 1.2;
 }
 
 .subtitle {
     color: var(--muted);
-    line-height: 1.55;
+    line-height: 1.35;
     max-width: 70ch;
+    font-size: 0.94rem;
 }
 
 .microcopy {
@@ -163,20 +169,21 @@ h1 {
 
 .list {
     display: grid;
-    gap: 12px;
+    gap: 8px;
 }
 
 .row {
     display: grid;
-    grid-template-columns: 68px 1fr;
-    gap: 14px;
+    grid-template-columns: 52px 1fr;
+    gap: 10px;
 }
 
-.rank, .slot {
-    border-radius: 16px;
+.rank,
+.slot {
+    border-radius: 12px;
     border: 2px solid var(--line);
     background: rgba(11, 16, 32, 0.78);
-    min-height: 72px;
+    min-height: 48px;
     transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
 }
 
@@ -184,16 +191,16 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.15rem;
+    font-size: 0.98rem;
     font-weight: 800;
 }
 
 .slot {
-    padding: 16px 18px;
+    padding: 8px 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 16px;
+    gap: 12px;
     cursor: pointer;
 }
 
@@ -202,13 +209,14 @@ h1 {
         border-color: #64748b;
     }
 
-    .slot.locked, .slot.disabled {
+    .slot.locked,
+    .slot.disabled {
         cursor: default;
     }
 
 .slot-text {
-    font-size: 1.04rem;
-    line-height: 1.3;
+    font-size: 0.96rem;
+    line-height: 1.2;
     font-weight: 600;
     color: #ffffff;
 }
@@ -228,9 +236,9 @@ h1 {
 }
 
 .status-tag {
-    font-size: 0.75rem;
+    font-size: 0.66rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     color: #f8fafc;
     opacity: 0;
     white-space: nowrap;
@@ -265,9 +273,9 @@ h1 {
 
 .controls {
     display: flex;
-    gap: 12px;
-    margin-top: 22px;
-    margin-bottom: 22px;
+    gap: 10px;
+    margin-top: 14px;
+    margin-bottom: 14px;
 }
 
     .controls .button-primary {
@@ -276,74 +284,74 @@ h1 {
 
 .metrics-block {
     display: grid;
-    gap: 14px;
-    margin-bottom: 18px;
+    gap: 10px;
+    margin-bottom: 12px;
 }
 
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: 8px;
 }
 
 .stat {
     background: rgba(11, 16, 32, 0.88);
     border: 1px solid rgba(148, 163, 184, 0.12);
-    border-radius: 16px;
-    padding: 14px;
+    border-radius: 12px;
+    padding: 10px 12px;
 }
 
 .stat-label {
     display: block;
     color: var(--muted);
-    font-size: 0.8rem;
-    margin-bottom: 6px;
+    font-size: 0.74rem;
+    margin-bottom: 4px;
 }
 
 .stat-value {
-    font-size: 1.18rem;
+    font-size: 1rem;
     font-weight: 800;
 }
 
 .score-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
+    gap: 8px;
 }
 
 .score-card {
     background: rgba(11, 16, 32, 0.88);
     border: 1px solid rgba(148, 163, 184, 0.12);
-    border-radius: 16px;
-    padding: 14px;
+    border-radius: 12px;
+    padding: 10px 12px;
 }
 
     .score-card strong {
         display: block;
         color: var(--muted);
-        font-size: 0.8rem;
-        margin-bottom: 6px;
+        font-size: 0.74rem;
+        margin-bottom: 4px;
     }
 
     .score-card span {
-        font-size: 1.25rem;
+        font-size: 1.05rem;
         font-weight: 800;
     }
 
 .utility-bar {
     display: flex;
-    gap: 12px;
+    gap: 10px;
     flex-wrap: wrap;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
 }
 
 .options-block,
 .debug-block {
     background: rgba(11, 16, 32, 0.42);
     border: 1px solid rgba(148, 163, 184, 0.08);
-    border-radius: 16px;
-    padding: 14px;
-    margin-bottom: 18px;
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 12px;
 }
 
 .options-grid,
@@ -360,13 +368,13 @@ h1 {
 
 .scoring-detail {
     color: var(--muted);
-    line-height: 1.6;
-    font-size: 0.92rem;
+    line-height: 1.45;
+    font-size: 0.84rem;
     background: rgba(11, 16, 32, 0.55);
     border: 1px solid rgba(148, 163, 184, 0.08);
-    border-radius: 14px;
-    padding: 12px 14px;
-    margin-top: 12px;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-top: 10px;
 }
 
 .message {
@@ -389,7 +397,8 @@ h1 {
 
 .solution,
 .meta-list,
-.legend {
+.legend,
+.rules-stack {
     display: grid;
     gap: 10px;
 }
@@ -547,18 +556,19 @@ h1 {
     gap: 24px;
 }
 
-.rules-stack {
+.topbar {
     display: grid;
     gap: 12px;
+    align-items: end;
 }
 
 @media (max-width: 720px) {
     body {
-        padding: 14px;
+        padding: 10px;
     }
 
     .main {
-        padding: 18px;
+        padding: 14px;
     }
 
     .stats-grid,
@@ -568,16 +578,29 @@ h1 {
     }
 
     .row {
-        grid-template-columns: 58px 1fr;
-        gap: 10px;
+        grid-template-columns: 44px 1fr;
+        gap: 8px;
     }
 
-    .rank, .slot {
-        min-height: 64px;
+    .rank,
+    .slot {
+        min-height: 42px;
+    }
+
+    .rank {
+        font-size: 0.9rem;
     }
 
     .slot {
-        padding: 14px;
+        padding: 7px 10px;
+    }
+
+    .slot-text {
+        font-size: 0.9rem;
+    }
+
+    .status-tag {
+        font-size: 0.62rem;
     }
 
     .controls {
