@@ -166,7 +166,25 @@
 
         return ranked.slice(0, question.topN).map((entry) => entry.item);
     }
+    function getPickerBadgeText(answer, correctAnswers) {
+        if (!state.priority.has(answer)) {
+            return "";
+        }
 
+        const currentGuessIndex = state.guesses.indexOf(answer);
+
+        if (currentGuessIndex === -1) {
+            return "Top 10";
+        }
+
+        const mainBoxText = getDirectionLabel(answer, currentGuessIndex, correctAnswers);
+
+        if (!getModeConfig().directionalHints) {
+            return "Top 10";
+        }
+
+        return `${mainBoxText} than ${currentGuessIndex + 1}`;
+    }
     function getDirectionLabel(answer, currentIndex, correctAnswers) {
         const mode = getModeConfig();
 
@@ -485,7 +503,7 @@
         els.pickerOptions.innerHTML = options.map((answer) => `
       <button class="option" data-answer="${escapeHtml(answer)}" type="button">
         <span>${escapeHtml(answer)}</span>
-        <span class="option-badge">${state.priority.has(answer) ? getDirectionLabel(answer, state.activeIndex, correctAnswers) : ""}</span>
+        <span class="option-badge">${getPickerBadgeText(answer, correctAnswers)}</span>
       </button>
     `).join("");
 
