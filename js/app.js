@@ -6,9 +6,34 @@
 
     const MAX_ATTEMPTS = 5;
 
+    const GAME_MODES = {
+        classic_plus: {
+            id: "classic_plus",
+            label: "Classic+",
+            description: "Top-10 hint only. No scoring.",
+            scoring: false,
+            directionalHints: false
+        },
+        modern: {
+            id: "modern",
+            label: "Modern",
+            description: "Classic+ with scoring.",
+            scoring: true,
+            directionalHints: false
+        },
+        modern_plus: {
+            id: "modern_plus",
+            label: "Modern+",
+            description: "Scoring plus higher/lower hints.",
+            scoring: true,
+            directionalHints: true
+        }
+    };
+
     const state = {
         poolId: window.TOP_TEN_ANSWER_POOLS[0].id,
         questionId: null,
+        mode: "modern_plus",
         guesses: [],
         statuses: [],
         locked: [],
@@ -22,6 +47,8 @@
     };
 
     const els = {
+        modeSelect: document.getElementById("modeSelect"),
+        modeDescription: document.getElementById("modeDescription"),
         poolSelect: document.getElementById("poolSelect"),
         questionSelect: document.getElementById("questionSelect"),
         randomQuestionBtn: document.getElementById("randomQuestionBtn"),
@@ -34,6 +61,7 @@
         attemptsUsed: document.getElementById("attemptsUsed"),
         lockedCount: document.getElementById("lockedCount"),
         eliminatedCount: document.getElementById("eliminatedCount"),
+        scoreGrid: document.getElementById("scoreGrid"),
         finalBoardScore: document.getElementById("finalBoardScore"),
         discoveryScore: document.getElementById("discoveryScore"),
         totalScore: document.getElementById("totalScore"),
@@ -50,6 +78,10 @@
         questionCount: document.getElementById("questionCount"),
         poolCount: document.getElementById("poolCount")
     };
+
+    function getModeConfig() {
+        return GAME_MODES[state.mode];
+    }
 
     function normaliseText(value) {
         return value.toLowerCase().replace(/[^a-z]/g, "");
@@ -119,6 +151,12 @@
     }
 
     function getDirectionLabel(answer, currentIndex, correctAnswers) {
+        const mode = getModeConfig();
+
+        if (!mode.directionalHints) {
+            return "Top 10";
+        }
+
         const actualIndex = correctAnswers.indexOf(answer);
 
         if (actualIndex === -1 || currentIndex == null || actualIndex === currentIndex) {
@@ -126,6 +164,14 @@
         }
 
         return actualIndex < currentIndex ? "Higher" : "Lower";
+    }
+
+    function buildModeSelect() {
+        els.modeSelect.innerHTML = Object.values(GAME_MODES)
+            .map((mode) => `<option value="${mode.id}">${mode.label}</option>`)
+            .join("");
+        els.modeSelect.value = state.mode;
+        els.modeDescription.textContent = getModeConfig().description;
     }
 
     function buildPoolSelect() {
@@ -185,6 +231,12 @@
     }
 
     function bindEvents() {
+        els.modeSelect.addEventListener("change", (event) => {
+            state.mode = event.target.value;
+            els.modeDescription.textContent = getModeConfig().description;
+            render();
+        });
+
         els.poolSelect.addEventListener("change", (event) => {
             state.poolId = event.target.value;
             buildQuestionSelect();
@@ -219,6 +271,7 @@
     function render() {
         const question = getQuestion(state.questionId);
         const correctAnswers = getCorrectAnswers(question);
+        const mode = getModeConfig();
 
         els.title.textContent = question.title;
         els.subtitle.textContent = question.description;
@@ -226,8 +279,15 @@
         els.lockedCount.textContent = `${state.locked.filter(Boolean).length} / ${correctAnswers.length}`;
         els.eliminatedCount.textContent = `${state.eliminated.size}`;
         els.submitBtn.disabled = state.finished;
+        els.modeDescription.textContent = mode.description;
 
-        renderScorePanel();
+        els.scoreGrid.hidden = !mode.scoring;
+        els.scoringDetail.hidden = !mode.scoring;
+
+        if (mode.scoring) {
+            renderScorePanel();
+        }
+
         renderBoard(correctAnswers);
     }
 
@@ -338,9 +398,14 @@
 
     function openPicker(index) {
         if (state.finished || state.locked[index]) return;
+
+        const mode = getModeConfig();
+
         state.activeIndex = index;
         els.pickerTitle.textContent = `Choose answer for rank ${index + 1}`;
-        els.pickerSubtitle.textContent = "Prioritised answers are shared across all active ranks until they are resolved.";
+        els.pickerSubtitle.textContent = mode.directionalHints
+            ? "Prioritised answers are shared across all active ranks. Yellow hints show higher or lower."
+            : "Prioritised answers are shared across all active ranks. Yellow hints only confirm top-10 membership.";
         els.pickerSearch.value = "";
         els.pickerOverlay.classList.add("show");
         renderPickerOptions();
@@ -389,6 +454,8 @@
 
     function submitGuesses() {
         if (state.finished) return;
+
+        const mode = getModeConfig();
 
         const missing = state.guesses
             .map((guess, index) => ({ guess, index }))
@@ -453,13 +520,27 @@
             state.solved = true;
             state.finished = true;
             revealSolution(false);
-            setMessage(`Solved in ${turn} submit${turn === 1 ? "" : "s"}. Final score recorded.`, "success");
+            setMessage(
+                mode.scoring
+                    ? `Solved in ${turn} submit${turn === 1 ? "" : "s"}. Final score recorded.`
+                    : `Solved in ${turn} submit${turn === 1 ? "" : "s"}.`,
+                "success"
+            );
         } else if (attemptsLeft === 0) {
             state.finished = true;
             revealSolution(true);
-            setMessage("No submits left. Final score and correct order are now shown.", "warn");
+            setMessage(
+                mode.scoring
+                    ? "No submits left. Final score and correct order are now shown."
+                    : "No submits left. Correct order is now shown.",
+                "warn"
+            );
         } else {
-            setMessage(`${attemptsLeft} submit${attemptsLeft === 1 ? "" : "s"} remaining. Green locks, yellow shows higher/lower, red eliminates non-top-10 answers.`, "");
+            const modeMessage = mode.directionalHints
+                ? "Green locks, yellow shows higher/lower, red eliminates non-top-10 answers."
+                : "Green locks, yellow confirms top-10 membership, red eliminates non-top-10 answers.";
+
+            setMessage(`${attemptsLeft} submit${attemptsLeft === 1 ? "" : "s"} remaining. ${modeMessage}`, "");
         }
 
         render();
@@ -491,6 +572,7 @@
     }
 
     function init() {
+        buildModeSelect();
         buildPoolSelect();
         buildQuestionSelect();
         bindEvents();

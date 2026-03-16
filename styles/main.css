@@ -66,7 +66,7 @@ body {
 
 .topbar {
     display: grid;
-    grid-template-columns: 1fr 1fr auto;
+    grid-template-columns: 1fr 1fr 1fr auto;
     gap: 12px;
     margin-bottom: 18px;
 }
@@ -295,21 +295,25 @@ h1 {
     opacity: 1;
 }
 
-.state-empty .rank, .state-empty .slot {
+.state-empty .rank,
+.state-empty .slot {
     border-color: var(--line);
 }
 
-.state-red .rank, .state-red .slot {
+.state-red .rank,
+.state-red .slot {
     border-color: #ef4444;
     background: rgba(220, 38, 38, 0.22);
 }
 
-.state-yellow .rank, .state-yellow .slot {
+.state-yellow .rank,
+.state-yellow .slot {
     border-color: #facc15;
     background: rgba(202, 138, 4, 0.18);
 }
 
-.state-green .rank, .state-green .slot {
+.state-green .rank,
+.state-green .slot {
     border-color: #22c55e;
     background: rgba(22, 163, 74, 0.18);
 }
@@ -388,38 +392,6 @@ h1 {
     .swatch.red {
         background: #dc2626;
     }
-
-.state-empty .rank,
-.state-empty .slot {
-    border-color: var(--line);
-}
-
-.state-red .rank,
-.state-red .slot {
-    border-color: #ef4444;
-    background: rgba(220, 38, 38, 0.22);
-}
-
-.state-yellow .rank,
-.state-yellow .slot {
-    border-color: #facc15;
-    background: rgba(202, 138, 4, 0.18);
-}
-
-.state-green .rank,
-.state-green .slot {
-    border-color: #22c55e;
-    background: rgba(22, 163, 74, 0.18);
-}
-
-.state-green .slot-text {
-    font-weight: 800;
-}
-
-.state-yellow .slot-text,
-.state-red .slot-text {
-    color: #ffffff;
-}
 
 .solution-wrap {
     margin-top: 22px;

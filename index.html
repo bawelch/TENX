@@ -13,6 +13,12 @@
 
             <div class="topbar">
                 <div class="control-group">
+                    <label for="modeSelect">Mode</label>
+                    <select id="modeSelect"></select>
+                    <p id="modeDescription" class="microcopy"></p>
+                </div>
+
+                <div class="control-group">
                     <label for="poolSelect">Answer pool</label>
                     <select id="poolSelect"></select>
                     <p id="poolCount" class="microcopy"></p>
@@ -45,7 +51,7 @@
                 </div>
             </div>
 
-            <div class="score-grid">
+            <div id="scoreGrid" class="score-grid">
                 <div class="score-card">
                     <strong>Final board score</strong>
                     <span id="finalBoardScore">0</span>
@@ -94,6 +100,7 @@
             </div>
 
             <div class="meta-list" style="margin-top: 18px;">
+                <div class="meta-item"><strong>Modes</strong><br />Classic+ has no scoring and no higher/lower hints. Modern adds scoring. Modern+ adds scoring and higher/lower hints.</div>
                 <div class="meta-item"><strong>Attempts</strong><br />You get 5 submits per question.</div>
                 <div class="meta-item"><strong>Scoring A</strong><br />Final board score depends on green, yellow and red results on your last visible board state.</div>
                 <div class="meta-item"><strong>Scoring B</strong><br />Discovery score depends on which turn a correct answer first became yellow and which turn it first became green.</div>
