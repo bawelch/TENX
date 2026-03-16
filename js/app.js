@@ -118,6 +118,16 @@
         return ranked.slice(0, question.topN).map((entry) => entry.item);
     }
 
+    function getDirectionLabel(answer, currentIndex, correctAnswers) {
+        const actualIndex = correctAnswers.indexOf(answer);
+
+        if (actualIndex === -1 || currentIndex == null || actualIndex === currentIndex) {
+            return "Top 10";
+        }
+
+        return actualIndex < currentIndex ? "Higher" : "Lower";
+    }
+
     function buildPoolSelect() {
         els.poolSelect.innerHTML = window.TOP_TEN_ANSWER_POOLS
             .map((pool) => `<option value="${pool.id}">${pool.label}</option>`)
@@ -229,7 +239,7 @@
             const statusText = status === "green"
                 ? "Locked"
                 : status === "yellow"
-                    ? "Top 10"
+                    ? getDirectionLabel(guess, index, correctAnswers)
                     : status === "red"
                         ? "Wrong"
                         : "";
@@ -280,7 +290,7 @@
             .join(" · ");
 
         els.scoringDetail.innerHTML = `
-      <div><strong>Board:</strong> ${boardBreakdown.green} green, ${boardBreakdown.yellow} yellow, ${boardBreakdown.red} wrong</div>
+      <div><strong>Board:</strong> ${boardBreakdown.green} green, ${boardBreakdown.yellow} yellow, ${boardBreakdown.red} red</div>
       <div><strong>Discovery:</strong> ${greenDiscovery}</div>
       <div><strong>Yellow discovery:</strong> ${yellowDiscovery}</div>
     `;
@@ -290,7 +300,9 @@
         return new Set(
             state.guesses
                 .map((guess, index) => ({ guess, index }))
-                .filter(({ guess, index }) => Boolean(guess) && index !== currentIndex)
+                .filter(({ guess, index }) => {
+                    return Boolean(guess) && index !== currentIndex && !state.priority.has(guess);
+                })
                 .map(({ guess }) => guess)
         );
     }
@@ -328,7 +340,7 @@
         if (state.finished || state.locked[index]) return;
         state.activeIndex = index;
         els.pickerTitle.textContent = `Choose answer for rank ${index + 1}`;
-        els.pickerSubtitle.textContent = "Yellow answers float to the top. Eliminated answers and duplicates are hidden.";
+        els.pickerSubtitle.textContent = "Prioritised answers are shared across all active ranks until they are resolved.";
         els.pickerSearch.value = "";
         els.pickerOverlay.classList.add("show");
         renderPickerOptions();
@@ -342,7 +354,10 @@
     }
 
     function renderPickerOptions() {
+        const question = getQuestion(state.questionId);
+        const correctAnswers = getCorrectAnswers(question);
         const options = getAvailableOptions();
+
         els.pickerCount.textContent = `${options.length} answers available`;
 
         if (!options.length) {
@@ -353,7 +368,7 @@
         els.pickerOptions.innerHTML = options.map((answer) => `
       <button class="option" data-answer="${escapeHtml(answer)}" type="button">
         <span>${escapeHtml(answer)}</span>
-        <span class="option-badge">${state.priority.has(answer) ? "prioritised" : ""}</span>
+        <span class="option-badge">${state.priority.has(answer) ? getDirectionLabel(answer, state.activeIndex, correctAnswers) : ""}</span>
       </button>
     `).join("");
 
@@ -389,25 +404,34 @@
         const turn = state.attemptsUsed;
         const question = getQuestion(state.questionId);
         const correctAnswers = getCorrectAnswers(question);
-        const topTenSet = new Set(correctAnswers);
+
+        const remainingCounts = {};
+        correctAnswers.forEach((answer) => {
+            remainingCounts[answer] = (remainingCounts[answer] || 0) + 1;
+        });
 
         state.guesses.forEach((guess, index) => {
             if (state.locked[index]) return;
 
-            if (guess === correctAnswers[index]) {
+            if (guess === correctAnswers[index] && (remainingCounts[guess] || 0) > 0) {
                 state.statuses[index] = "green";
                 state.locked[index] = true;
                 state.priority.delete(guess);
+                remainingCounts[guess] -= 1;
 
                 if (state.answerMilestones[guess] && !state.answerMilestones[guess].firstGreenTurn) {
                     state.answerMilestones[guess].firstGreenTurn = turn;
                 }
-                return;
             }
+        });
 
-            if (topTenSet.has(guess)) {
+        state.guesses.forEach((guess, index) => {
+            if (state.locked[index]) return;
+
+            if ((remainingCounts[guess] || 0) > 0) {
                 state.statuses[index] = "yellow";
                 state.priority.add(guess);
+                remainingCounts[guess] -= 1;
 
                 if (state.answerMilestones[guess] && !state.answerMilestones[guess].firstYellowTurn) {
                     state.answerMilestones[guess].firstYellowTurn = turn;
@@ -416,7 +440,10 @@
             }
 
             state.statuses[index] = "red";
-            state.eliminated.add(guess);
+
+            if (!correctAnswers.includes(guess)) {
+                state.eliminated.add(guess);
+            }
         });
 
         const solved = state.locked.every(Boolean);
@@ -432,7 +459,7 @@
             revealSolution(true);
             setMessage("No submits left. Final score and correct order are now shown.", "warn");
         } else {
-            setMessage(`${attemptsLeft} submit${attemptsLeft === 1 ? "" : "s"} remaining. Green locks, yellow prioritises, red eliminates.`, "");
+            setMessage(`${attemptsLeft} submit${attemptsLeft === 1 ? "" : "s"} remaining. Green locks, yellow shows higher/lower, red eliminates non-top-10 answers.`, "");
         }
 
         render();
