@@ -1,7 +1,7 @@
 window.TOP_TEN_ANSWER_POOLS = [
     {
         id: "countries_all",
-        label: "Countries",
+        label: "CountriesX",
         singularLabel: "country",
         pluralLabel: "countries",
         items: [
