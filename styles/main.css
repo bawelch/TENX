@@ -277,10 +277,10 @@ h2 {
     margin-top: 14px;
     margin-bottom: 14px;
 }
-
+/*
     .controls .button-primary {
         flex: 1;
-    }
+    }*/
 
 .metrics-block {
     display: grid;
@@ -604,10 +604,19 @@ h2 {
     }
 
     .controls {
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: 1fr 1.61fr 1fr;
+        gap: 8px;
     }
+
+        .controls button,
+        .controls .button-ghost {
+            padding: 10px 8px;
+            font-size: 0.9rem;
+        }
 
     .utility-bar {
         flex-direction: column;
     }
+}
 }
