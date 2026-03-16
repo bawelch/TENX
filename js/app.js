@@ -170,6 +170,18 @@
     function getDirectionLabel(answer, currentIndex, correctAnswers) {
         const mode = getModeConfig();
 
+        //if (!mode.directionalHints) {
+        //    return "*";
+        //}
+
+        //const actualIndex = correctAnswers.indexOf(answer);
+
+        //if (actualIndex === -1 || currentIndex == null || actualIndex === currentIndex) {
+        //    return "*";
+        //}
+
+        //return actualIndex < currentIndex ? "*" : "*";
+
         if (!mode.directionalHints) {
             return "Top 10";
         }
