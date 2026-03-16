@@ -12,21 +12,32 @@
             label: "Classic+",
             description: "Top-10 hint only. No scoring.",
             scoring: false,
-            directionalHints: false
+            directionalHints: false,
+            debugTools: false
         },
         modern: {
             id: "modern",
             label: "Modern",
             description: "Classic+ with scoring.",
             scoring: true,
-            directionalHints: false
+            directionalHints: false,
+            debugTools: false
         },
         modern_plus: {
             id: "modern_plus",
             label: "Modern+",
             description: "Scoring plus higher/lower hints.",
             scoring: true,
-            directionalHints: true
+            directionalHints: true,
+            debugTools: false
+        },
+        debug: {
+            id: "debug",
+            label: "Debug",
+            description: "Modern+ with answer-pool controls, question selection, random question, and detailed breakdowns.",
+            scoring: true,
+            directionalHints: true,
+            debugTools: true
         }
     };
 
@@ -49,6 +60,8 @@
     const els = {
         modeSelect: document.getElementById("modeSelect"),
         modeDescription: document.getElementById("modeDescription"),
+        poolControlGroup: document.getElementById("poolControlGroup"),
+        questionControlGroup: document.getElementById("questionControlGroup"),
         poolSelect: document.getElementById("poolSelect"),
         questionSelect: document.getElementById("questionSelect"),
         randomQuestionBtn: document.getElementById("randomQuestionBtn"),
@@ -281,8 +294,12 @@
         els.submitBtn.disabled = state.finished;
         els.modeDescription.textContent = mode.description;
 
+        els.poolControlGroup.hidden = !mode.debugTools;
+        els.questionControlGroup.hidden = !mode.debugTools;
+        els.randomQuestionBtn.hidden = !mode.debugTools;
+
         els.scoreGrid.hidden = !mode.scoring;
-        els.scoringDetail.hidden = !mode.scoring;
+        els.scoringDetail.hidden = !mode.debugTools;
 
         if (mode.scoring) {
             renderScorePanel();
