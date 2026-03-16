@@ -425,7 +425,17 @@
       <div><strong>Yellow discovery:</strong> ${yellowDiscovery}</div>
     `;
     }
+    function pickRandomQuestionForCurrentPool() {
+        const questions = getQuestionsForPool(state.poolId);
 
+        if (!questions.length) {
+            state.questionId = null;
+            return;
+        }
+
+        const next = questions[Math.floor(Math.random() * questions.length)];
+        state.questionId = next.id;
+    }
     function getUnavailableAnswers(currentIndex) {
         return new Set(
             state.guesses
@@ -644,6 +654,7 @@
     function init() {
         buildModeSelect();
         buildPoolSelect();
+        pickRandomQuestionForCurrentPool();
         buildQuestionSelect();
         bindEvents();
         resetGame();
