@@ -31,6 +31,7 @@
                 </div>
 
                 <button id="randomQuestionBtn" class="button-ghost" type="button">Random question</button>
+                <a href="./rules.html" class="button-ghost button-link">Rules</a>
             </div>
 
             <h1 id="questionTitle"></h1>
@@ -76,42 +77,12 @@
             </div>
 
             <div id="message" class="message"></div>
-        </section>
-
-        <aside class="panel side">
-            <h2>Rules</h2>
-            <p class="helper">
-                Click a rank to choose from the answer pool. Green means correct answer in the correct position and it locks. Yellow means the answer belongs somewhere in the top 10, but not there. Red means it is not in the current top 10 and will be removed from future choices.
-            </p>
-
-            <div class="legend">
-                <div class="legend-item">
-                    <span class="swatch green"></span>
-                    <div><strong>Green</strong><br />Correct answer, correct rank, locked in place.</div>
-                </div>
-                <div class="legend-item">
-                    <span class="swatch yellow"></span>
-                    <div><strong>Yellow</strong><br />Correct answer set, wrong rank, prioritised in the picker.</div>
-                </div>
-                <div class="legend-item">
-                    <span class="swatch red"></span>
-                    <div><strong>Red</strong><br />Not in the current top 10, removed from future choices.</div>
-                </div>
-            </div>
-
-            <div class="meta-list" style="margin-top: 18px;">
-                <div class="meta-item"><strong>Modes</strong><br />Classic+ has no scoring and no higher/lower hints. Modern adds scoring. Modern+ adds scoring and higher/lower hints. Debug adds admin controls and detailed breakdowns.</div>
-                <div class="meta-item"><strong>Attempts</strong><br />You get 5 submits per question.</div>
-                <div class="meta-item"><strong>Scoring A</strong><br />Final board score depends on green, yellow and red results on your last visible board state.</div>
-                <div class="meta-item"><strong>Scoring B</strong><br />Discovery score depends on which turn a correct answer first became yellow and which turn it first became green.</div>
-                <div class="meta-item"><strong>Data model</strong><br />Answer pools live centrally in one file; question definitions are generated separately and can be extended cleanly.</div>
-            </div>
 
             <div id="solutionWrap" class="solution-wrap">
                 <h2>Correct order</h2>
                 <div id="solution" class="solution"></div>
             </div>
-        </aside>
+        </section>
     </div>
 
     <div id="pickerOverlay" class="picker-overlay">

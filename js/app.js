@@ -251,17 +251,20 @@
         });
 
         els.poolSelect.addEventListener("change", (event) => {
+            if (!getModeConfig().debugTools) return;
             state.poolId = event.target.value;
             buildQuestionSelect();
             resetGame();
         });
 
         els.questionSelect.addEventListener("change", (event) => {
+            if (!getModeConfig().debugTools) return;
             state.questionId = event.target.value;
             resetGame();
         });
 
         els.randomQuestionBtn.addEventListener("click", () => {
+            if (!getModeConfig().debugTools) return;
             const questions = getQuestionsForPool(state.poolId);
             const next = questions[Math.floor(Math.random() * questions.length)];
             state.questionId = next.id;
@@ -294,9 +297,9 @@
         els.submitBtn.disabled = state.finished;
         els.modeDescription.textContent = mode.description;
 
-        els.poolControlGroup.hidden = !mode.debugTools;
-        els.questionControlGroup.hidden = !mode.debugTools;
-        els.randomQuestionBtn.hidden = !mode.debugTools;
+        els.poolSelect.disabled = !mode.debugTools;
+        els.questionSelect.disabled = !mode.debugTools;
+        els.randomQuestionBtn.disabled = !mode.debugTools;
 
         els.scoreGrid.hidden = !mode.scoring;
         els.scoringDetail.hidden = !mode.debugTools;

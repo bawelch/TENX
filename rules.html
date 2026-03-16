@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Top 10 Ranker Rules</title>
+    <link rel="stylesheet" href="./styles/main.css" />
+</head>
+<body>
+    <div class="rules-page">
+        <section class="panel main">
+            <p class="eyebrow">Top-10 ranker</p>
+            <div class="topbar" style="grid-template-columns: 1fr auto;">
+                <div>
+                    <h1>Rules</h1>
+                    <p class="subtitle">How the game works, what each mode does, and how scoring is calculated.</p>
+                </div>
+                <a href="./index.html" class="button-ghost button-link">Back to game</a>
+            </div>
+
+            <div class="rules-stack">
+                <div class="meta-item">
+                    <div>
+                        <strong>Goal</strong><br />
+                        Fill the ten ranks in the correct order for the current question within 5 submits.
+                    </div>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="swatch green"></span>
+                        <div><strong>Green</strong><br />Correct answer in the correct position. It locks and cannot be changed.</div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="swatch yellow"></span>
+                        <div><strong>Yellow</strong><br />The answer is somewhere in the top 10 but is not in the correct position.</div>
+                    </div>
+                    <div class="legend-item">
+                        <span class="swatch red"></span>
+                        <div><strong>Red</strong><br />The answer is not in the top 10 for the current question and is removed from future choice lists.</div>
+                    </div>
+                </div>
+
+                <div class="meta-item">
+                    <div>
+                        <strong>Prioritised answers</strong><br />
+                        Yellow answers are prioritised at the top of all active choice lists until they are resolved or turned green.
+                    </div>
+                </div>
+
+                <div class="meta-item">
+                    <div>
+                        <strong>Modes</strong><br />
+                        <strong>Classic+</strong>: top-10 hint only, no scoring.<br />
+                        <strong>Modern</strong>: Classic+ plus scoring.<br />
+                        <strong>Modern+</strong>: Modern plus higher/lower directional hints for yellow answers.<br />
+                        <strong>Debug</strong>: Modern+ plus manual answer-pool selection, question selection, random-question button, and the detailed discovery breakdown.
+                    </div>
+                </div>
+
+                <div class="meta-item">
+                    <div>
+                        <strong>Scoring</strong><br />
+                        Final board score: green = +120, yellow = +45, red = -15.<br />
+                        Discovery score: first yellow and first green turns add bonus points based on how early they were found.
+                    </div>
+                </div>
+
+                <div class="meta-item">
+                    <div>
+                        <strong>Notes</strong><br />
+                        In non-debug modes, answer-pool and question controls remain visible but are disabled.
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
