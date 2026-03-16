@@ -233,7 +233,7 @@
         state.solved = false;
         initialiseMilestones();
         els.solutionWrap.classList.remove("show");
-        setMessage("Select an answer for each rank, then submit.", "");
+        setMessage("", "");
         render();
         closePicker();
     }
