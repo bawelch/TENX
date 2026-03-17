@@ -485,7 +485,7 @@
 
         els.poolSelect.disabled = !mode.debugTools;
         els.questionSelect.disabled = !mode.debugTools;
-        els.randomQuestionBtn.disabled = !mode.debugTools;
+        //els.randomQuestionBtn.disabled = !mode.debugTools;
         els.scoringDetail.hidden = !mode.debugTools;
 
         if (mode.scoring) {
