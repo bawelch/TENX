@@ -193,6 +193,25 @@
 
         return `rgba(${color.r}, ${color.g}, ${color.b}, 0.95)`;
     }
+
+    function getHpFillColor(hpPercent) {
+        const t = Math.max(0, Math.min(100, hpPercent));
+
+        const low = { r: 185, g: 74, b: 72 };     // red
+        const mid = { r: 201, g: 162, b: 39 };     // yellow
+        const high = { r: 76, g: 175, b: 80 };    // green
+
+        let color;
+
+        if (t <= 50) {
+            color = interpolateRgb(low, mid, t / 50);
+        } else {
+            color = interpolateRgb(mid, high, (t - 50) / 50);
+        }
+
+        return `rgb(${color.r}, ${color.g}, ${color.b})`;
+    }
+
     function getLevelInfo(xp, baseLevelXp = BASE_LEVEL_XP, levelScaling = LEVEL_SCALING) {
         const level = Math.floor(Math.pow(Math.max(0, xp), 1 / levelScaling) / baseLevelXp) + 1;
 
@@ -214,6 +233,7 @@
     function renderHealthBar() {
         const hpPercent = state.maxHp > 0 ? (state.hp / state.maxHp) * 100 : 0;
         els.healthBar.style.width = `${hpPercent}%`;
+        els.healthBar.style.backgroundColor = getHpFillColor(hpPercent);
     }
     function getNameStats(value) {
         const normalized = normaliseText(value);
