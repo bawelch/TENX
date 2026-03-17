@@ -60,7 +60,7 @@
         hp: 100,
         maxHp: 100,
         bankedCoins: 0,
-        bankedXp: 0,
+        bankedXp: 500,
         roundHpApplied: false,
     };
 
@@ -146,7 +146,39 @@
 
         if (els.titleLevelFill) {
             els.titleLevelFill.style.width = `${levelInfo.progressPct}%`;
+            els.titleLevelFill.style.backgroundColor = getXpCompletionColor(levelInfo.progressPct);
         }
+    }
+    function lerp(start, end, t) {
+        return start + (end - start) * t;
+    }
+
+    function interpolateRgb(colorA, colorB, t) {
+        return {
+            r: Math.round(lerp(colorA.r, colorB.r, t)),
+            g: Math.round(lerp(colorA.g, colorB.g, t)),
+            b: Math.round(lerp(colorA.b, colorB.b, t))
+        };
+    }
+
+    function getXpCompletionColor(progressPct) {
+        const t = Math.max(0, Math.min(100, progressPct));
+
+        // Replace these with your actual UI colours if different
+        const wrongRed = { r: 185, g: 74, b: 72 };
+        const almostYellow = { r: 201, g: 162, b: 39 };
+        const rightGreen = { r: 76, g: 175, b: 80 };
+
+
+        let color;
+
+        if (t <= 50) {
+            color = interpolateRgb(wrongRed, almostYellow, t / 50);
+        } else {
+            color = interpolateRgb(almostYellow, rightGreen, (t - 50) / 50);
+        }
+
+        return `rgba(${color.r}, ${color.g}, ${color.b}, 0.95)`;
     }
     function getLevelInfo(xp, baseLevelXp = BASE_LEVEL_XP, levelScaling = LEVEL_SCALING) {
         const level = Math.floor(Math.pow(Math.max(0, xp), 1 / levelScaling) / baseLevelXp) + 1;
