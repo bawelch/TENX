@@ -9,7 +9,10 @@
 <body>
     <div class="app">
         <section class="panel main">
-            <p class="eyebrow">TENNER</p>
+            <div class="game-title-wrap">
+                <div class="game-title-fill" id="titleLevelFill"></div>
+                <div class="game-title" id="gameTitle">TENNER - LEVEL 1 (0%)</div>
+            </div>
 
             <div class="header-block">
                 <h1 id="questionTitle"></h1>
@@ -31,14 +34,7 @@
             </div>
 
             <div class="meta-bar-wrap">
-                <div class="meta-bar-fill" id="metaBarFill"></div>
-
                 <div class="meta-bar">
-                    <div class="meta-stat meta-stat-small">
-                        <div class="meta-label">Level</div>
-                        <div class="meta-value" id="xpScore">1 (0%)</div>
-                    </div>
-
                     <div class="meta-stat meta-stat-large">
                         <div class="meta-label">Coins</div>
                         <div class="meta-value" id="totalScore">0</div>

@@ -80,8 +80,9 @@
         submitBtn: document.getElementById("submitBtn"),
         resetBtn: document.getElementById("resetBtn"),
         message: document.getElementById("message"),
+        gameTitle: document.getElementById("gameTitle"),
+        titleLevelFill: document.getElementById("titleLevelFill"),
         eliminatedCount: document.getElementById("eliminatedCount"),
-        metaBarFill: document.getElementById("metaBarFill"),
         totalScore: document.getElementById("totalScore"),
         scoringDetail: document.getElementById("scoringDetail"),
         solutionWrap: document.getElementById("solutionWrap"),
@@ -137,10 +138,13 @@
 
         els.totalScore.textContent = String(totalCoins);
         els.eliminatedCount.textContent = `${state.eliminated.size}`;
-        els.xpScore.textContent = `${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)`;
 
-        if (els.metaBarFill) {
-            els.metaBarFill.style.width = `${levelInfo.progressPct}%`;
+        if (els.gameTitle) {
+            els.gameTitle.textContent = `TENNER - LEVEL ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)`;
+        }
+
+        if (els.titleLevelFill) {
+            els.titleLevelFill.style.width = `${levelInfo.progressPct}%`;
         }
     }
     function getLevelInfo(xp, baseLevelXp = BASE_LEVEL_XP, levelScaling = LEVEL_SCALING) {
