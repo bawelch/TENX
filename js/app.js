@@ -58,10 +58,14 @@
         answerMilestones: {},
         hp: 100,
         maxHp: 100,
+        coins: 0,
+        xp: 0,
+        roundScored: false,
         roundHpApplied: false,
     };
 
     const els = {
+        xpScore: document.getElementById("xpScore"),
         healthBar: document.getElementById("healthBar"),
         modeSelect: document.getElementById("modeSelect"),
         modeDescription: document.getElementById("modeDescription"),
@@ -76,8 +80,6 @@
         submitBtn: document.getElementById("submitBtn"),
         resetBtn: document.getElementById("resetBtn"),
         message: document.getElementById("message"),
-        attemptsUsed: document.getElementById("attemptsUsed"),
-        lockedCount: document.getElementById("lockedCount"),
         eliminatedCount: document.getElementById("eliminatedCount"),
         scoreGrid: document.getElementById("scoreGrid"),
         finalBoardScore: document.getElementById("finalBoardScore"),
@@ -263,7 +265,16 @@
         els.questionSelect.value = state.questionId;
         els.questionCount.textContent = `${questions.length} questions in this pool`;
     }
+    function awardRoundScoresOnce() {
+        if (state.roundScored) return;
 
+        const boardScore = window.TOP_TEN_SCORING.getBoardScore(state.statuses);
+        const discoveryScore = window.TOP_TEN_SCORING.getDiscoveryScore(state.answerMilestones);
+
+        state.coins += boardScore;
+        state.xp += discoveryScore;
+        state.roundScored = true;
+    }
     function initialiseMilestones() {
         const answers = getCorrectAnswers(getQuestion(state.questionId));
         state.answerMilestones = {};
@@ -296,6 +307,7 @@
         state.finished = false;
         state.solved = false;
         state.roundHpApplied = false;
+        state.roundScored = false;
         initialiseMilestones();
         els.solutionWrap.classList.remove("show");
         setMessage("", "");
@@ -356,8 +368,7 @@
         renderHealthBar();
         els.title.textContent = question.title;
         els.subtitle.textContent = question.description;
-        els.attemptsUsed.textContent = `${state.attemptsUsed} / ${MAX_ATTEMPTS}`;
-        els.lockedCount.textContent = `${state.locked.filter(Boolean).length} / ${correctAnswers.length}`;
+        els.submitBtn.textContent = `Submit - ${state.attemptsUsed}/${MAX_ATTEMPTS}`;
         els.eliminatedCount.textContent = `${state.eliminated.size}`;
         els.submitBtn.disabled = state.finished;
         els.modeDescription.textContent = mode.description;
@@ -426,11 +437,11 @@
     function renderScorePanel() {
         const boardScore = window.TOP_TEN_SCORING.getBoardScore(state.statuses);
         const discoveryScore = window.TOP_TEN_SCORING.getDiscoveryScore(state.answerMilestones);
-        const totalScore = boardScore + discoveryScore;
 
         els.finalBoardScore.textContent = String(boardScore);
         els.discoveryScore.textContent = String(discoveryScore);
-        els.totalScore.textContent = String(totalScore);
+        els.totalScore.textContent = String(state.coins);
+        els.xpScore.textContent = String(state.xp);
 
         const boardBreakdown = window.TOP_TEN_SCORING.getBoardBreakdown(state.statuses);
         const discoveryBreakdown = window.TOP_TEN_SCORING.getDiscoveryBreakdown(state.answerMilestones);
@@ -639,6 +650,7 @@
             state.solved = true;
             state.finished = true;
             applyRoundHpChange();
+            awardRoundScoresOnce();
             revealSolution(false);
             setMessage(
                 mode.scoring
@@ -649,6 +661,7 @@
         } else if (attemptsLeft === 0) {
             state.finished = true;
             applyRoundHpChange();
+            awardRoundScoresOnce();
             revealSolution(true);
             setMessage(
                 mode.scoring
