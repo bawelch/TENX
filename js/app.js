@@ -3,8 +3,9 @@
         a: 1, b: 3, c: 3, d: 2, e: 1, f: 4, g: 2, h: 4, i: 1, j: 8, k: 5, l: 1, m: 3,
         n: 1, o: 1, p: 3, q: 10, r: 1, s: 1, t: 1, u: 1, v: 4, w: 4, x: 8, y: 4, z: 10
     };
-
-    const MAX_ATTEMPTS = 5;
+    const BASE_LEVEL_XP = 100;
+    const LEVEL_SCALING = 2;
+    const MAX_ATTEMPTS = 3;
 
     const GAME_MODES = {
         classic_plus: {
@@ -58,9 +59,8 @@
         answerMilestones: {},
         hp: 100,
         maxHp: 100,
-        coins: 0,
-        xp: 0,
-        roundScored: false,
+        bankedCoins: 0,
+        bankedXp: 0,
         roundHpApplied: false,
     };
 
@@ -122,7 +122,34 @@
         state.hp = Math.max(0, Math.min(state.maxHp, state.hp + delta));
         state.roundHpApplied = true;
     }
+    function bankCurrentRoundScores() {
+        if (state.roundBanked) return;
 
+        const roundBoardScore = window.TOP_TEN_SCORING.getBoardScore(state.statuses);
+        const roundDiscoveryScore = window.TOP_TEN_SCORING.getDiscoveryScore(state.answerMilestones);
+
+        state.bankedCoins += roundBoardScore;
+        state.bankedXp += roundDiscoveryScore;
+        state.roundBanked = true;
+    }
+    function getLevelInfo(xp, baseLevelXp = BASE_LEVEL_XP, levelScaling = LEVEL_SCALING) {
+        const level = Math.floor(Math.pow(Math.max(0, xp), 1 / levelScaling) / baseLevelXp) + 1;
+
+        const currentThreshold = Math.pow(baseLevelXp * (level - 1), levelScaling);
+        const nextThreshold = Math.pow(baseLevelXp * level, levelScaling);
+
+        const progressToNext = nextThreshold > currentThreshold
+            ? (xp - currentThreshold) / (nextThreshold - currentThreshold)
+            : 1;
+
+        return {
+            level,
+            progressToNext,
+            progressPct: Math.max(0, Math.min(100, progressToNext * 100)),
+            currentThreshold,
+            nextThreshold
+        };
+    }
     function renderHealthBar() {
         const hpPercent = state.maxHp > 0 ? (state.hp / state.maxHp) * 100 : 0;
         els.healthBar.style.width = `${hpPercent}%`;
@@ -265,15 +292,12 @@
         els.questionSelect.value = state.questionId;
         els.questionCount.textContent = `${questions.length} questions in this pool`;
     }
-    function awardRoundScoresOnce() {
-        if (state.roundScored) return;
+    function getCoinsTotal() {
+        return state.bankedCoins + window.TOP_TEN_SCORING.getBoardScore(state.statuses);
+    }
 
-        const boardScore = window.TOP_TEN_SCORING.getBoardScore(state.statuses);
-        const discoveryScore = window.TOP_TEN_SCORING.getDiscoveryScore(state.answerMilestones);
-
-        state.coins += boardScore;
-        state.xp += discoveryScore;
-        state.roundScored = true;
+    function getXpTotal() {
+        return state.bankedXp + window.TOP_TEN_SCORING.getDiscoveryScore(state.answerMilestones);
     }
     function initialiseMilestones() {
         const answers = getCorrectAnswers(getQuestion(state.questionId));
@@ -308,6 +332,7 @@
         state.solved = false;
         state.roundHpApplied = false;
         state.roundScored = false;
+        state.roundBanked = false;
         initialiseMilestones();
         els.solutionWrap.classList.remove("show");
         setMessage("", "");
@@ -331,12 +356,14 @@
             if (!getModeConfig().debugTools) return;
             state.poolId = event.target.value;
             buildQuestionSelect();
+            bankCurrentRoundScores();
             resetGame();
         });
 
         els.questionSelect.addEventListener("change", (event) => {
             if (!getModeConfig().debugTools) return;
             state.questionId = event.target.value;
+            bankCurrentRoundScores();
             resetGame();
         });
 
@@ -346,6 +373,7 @@
             const next = questions[Math.floor(Math.random() * questions.length)];
             state.questionId = next.id;
             els.questionSelect.value = state.questionId;
+            bankCurrentRoundScores();
             resetGame();
         });
 
@@ -438,10 +466,14 @@
         const boardScore = window.TOP_TEN_SCORING.getBoardScore(state.statuses);
         const discoveryScore = window.TOP_TEN_SCORING.getDiscoveryScore(state.answerMilestones);
 
+        const totalCoins = getCoinsTotal();
+        const totalXp = getXpTotal();
+        const levelInfo = getLevelInfo(totalXp);
+
         els.finalBoardScore.textContent = String(boardScore);
         els.discoveryScore.textContent = String(discoveryScore);
-        els.totalScore.textContent = String(state.coins);
-        els.xpScore.textContent = String(state.xp);
+        els.totalScore.textContent = String(totalCoins);
+        els.xpScore.textContent = `${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)`;
 
         const boardBreakdown = window.TOP_TEN_SCORING.getBoardBreakdown(state.statuses);
         const discoveryBreakdown = window.TOP_TEN_SCORING.getDiscoveryBreakdown(state.answerMilestones);
@@ -457,6 +489,7 @@
       <div><strong>Board:</strong> ${boardBreakdown.green} green, ${boardBreakdown.yellow} yellow, ${boardBreakdown.red} red</div>
       <div><strong>Discovery:</strong> ${greenDiscovery}</div>
       <div><strong>Yellow discovery:</strong> ${yellowDiscovery}</div>
+      <div><strong>Total XP:</strong> ${totalXp} → Level ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}% to next)</div>
     `;
     }
     function pickRandomQuestionForCurrentPool() {
@@ -650,7 +683,7 @@
             state.solved = true;
             state.finished = true;
             applyRoundHpChange();
-            awardRoundScoresOnce();
+            //awardRoundScoresOnce();
             revealSolution(false);
             setMessage(
                 mode.scoring
@@ -661,7 +694,7 @@
         } else if (attemptsLeft === 0) {
             state.finished = true;
             applyRoundHpChange();
-            awardRoundScoresOnce();
+            //awardRoundScoresOnce();
             revealSolution(true);
             setMessage(
                 mode.scoring
