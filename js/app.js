@@ -83,6 +83,7 @@
         message: document.getElementById("message"),
         gameTitle: document.getElementById("gameTitle"),
         titleLevelFill: document.getElementById("titleLevelFill"),
+        accuracyScore: document.getElementById("accuracyScore"),
         eliminatedCount: document.getElementById("eliminatedCount"),
         totalScore: document.getElementById("totalScore"),
         scoringDetail: document.getElementById("scoringDetail"),
@@ -122,6 +123,17 @@
         state.hp = Math.max(0, Math.min(state.maxHp, state.hp + delta));
         state.roundHpApplied = true;
     }
+    function getAccuracyScore() {
+        const coins = getCoinsTotal();
+        const eliminated = state.eliminated.size;
+        const denominator = coins + eliminated;
+
+        if (denominator === 0) {
+            return 0;
+        }
+
+        return (coins / denominator) * 100;
+    }
     function bankCurrentRoundScores() {
         if (state.roundBanked) return;
 
@@ -136,9 +148,10 @@
         const totalCoins = getCoinsTotal();
         const totalXp = getXpTotal();
         const levelInfo = getLevelInfo(totalXp);
+        const accuracy = getAccuracyScore();
 
         els.totalScore.textContent = String(totalCoins);
-        els.eliminatedCount.textContent = `${state.eliminated.size}`;
+        els.accuracyScore.textContent = `${getAccuracyScore().toFixed(2)}%`;
 
         if (els.gameTitle) {
             els.gameTitle.textContent = `TENNER - LEVEL ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)`;
@@ -446,7 +459,7 @@
         els.title.textContent = question.title;
         els.subtitle.textContent = question.description;
         els.submitBtn.textContent = `Submit - ${state.attemptsUsed}/${MAX_ATTEMPTS}`;
-        els.eliminatedCount.textContent = `${state.eliminated.size}`;
+        //els.eliminatedCount.textContent = `${state.eliminated.size}`;
         els.submitBtn.disabled = state.finished;
         els.modeDescription.textContent = mode.description;
 
