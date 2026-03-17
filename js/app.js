@@ -60,7 +60,7 @@
         hp: 100,
         maxHp: 100,
         bankedCoins: 0,
-        bankedXp: 10000,
+        bankedXp: 500,
         roundHpApplied: false,
     };
 
@@ -84,6 +84,7 @@
         gameTitle: document.getElementById("gameTitle"),
         titleLevelFill: document.getElementById("titleLevelFill"),
         accuracyScore: document.getElementById("accuracyScore"),
+        eliminatedCount: document.getElementById("eliminatedCount"),
         totalScore: document.getElementById("totalScore"),
         scoringDetail: document.getElementById("scoringDetail"),
         solutionWrap: document.getElementById("solutionWrap"),
@@ -122,6 +123,17 @@
         state.hp = Math.max(0, Math.min(state.maxHp, state.hp + delta));
         state.roundHpApplied = true;
     }
+    function getAccuracyScore() {
+        const coins = getCoinsTotal();
+        const eliminated = state.eliminated.size;
+        const denominator = coins + eliminated;
+
+        if (denominator === 0) {
+            return 0;
+        }
+
+        return (coins / denominator) * 100;
+    }
     function bankCurrentRoundScores() {
         if (state.roundBanked) return;
 
@@ -139,7 +151,7 @@
         const accuracy = getAccuracyScore();
 
         els.totalScore.textContent = String(totalCoins);
-        els.accuracyScore.textContent = `${accuracy.toFixed(2)}%`;
+        els.accuracyScore.textContent = `${getAccuracyScore().toFixed(2)}%`;
 
         if (els.gameTitle) {
             els.gameTitle.textContent = `TENNER - LEVEL ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)`;
@@ -147,6 +159,7 @@
 
         if (els.titleLevelFill) {
             els.titleLevelFill.style.width = `${levelInfo.progressPct}%`;
+            els.titleLevelFill.style.backgroundColor = getXpCompletionColor(levelInfo.progressPct);
         }
     }
     function lerp(start, end, t) {
@@ -224,17 +237,7 @@
             alphabetical: normalized
         };
     }
-    function getAccuracyScore() {
-        const coins = getCoinsTotal();
-        const eliminated = state.eliminated.size;
-        const denominator = coins + eliminated;
 
-        if (denominator === 0) {
-            return 0;
-        }
-
-        return (coins / denominator) * 100;
-    }
     function getPool(poolId) {
         return window.TOP_TEN_QUESTION_POOL_MAP[poolId];
     }
@@ -456,7 +459,7 @@
         els.title.textContent = question.title;
         els.subtitle.textContent = question.description;
         els.submitBtn.textContent = `Submit - ${state.attemptsUsed}/${MAX_ATTEMPTS}`;
-/*        els.eliminatedCount.textContent = `${state.eliminated.size}`;*/
+        //els.eliminatedCount.textContent = `${state.eliminated.size}`;
         els.submitBtn.disabled = state.finished;
         els.modeDescription.textContent = mode.description;
 
