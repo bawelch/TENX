@@ -297,17 +297,6 @@ h2 {
     transition: width 0.35s ease;
 }
 
-.health-readout {
-    position: absolute;
-    top: 6px;
-    right: 10px;
-    z-index: 2;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    color: rgba(255, 255, 255, 0.92);
-    pointer-events: none;
-}
 
 .controls {
     position: relative;
@@ -316,7 +305,7 @@ h2 {
     grid-template-columns: 1fr 1.61fr 1fr;
     gap: 10px;
     margin: 0;
-    padding: 18px 10px 10px;
+    padding: 10px;
 }
 
     .controls button,
@@ -326,17 +315,17 @@ h2 {
     }
 
     .controls .button-primary {
-        background: linear-gradient(135deg, rgba(37, 99, 235, 0.82), rgba(29, 78, 216, 0.82));
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
         color: white;
     }
 
     .controls .button-secondary {
-        background: rgba(51, 65, 85, 0.78);
+        background: #334155;
         color: var(--text);
     }
 
     .controls .button-ghost {
-        background: rgba(30, 41, 59, 0.78);
+        background: #1e293b;
         color: var(--text);
     }
 
@@ -666,7 +655,7 @@ h2 {
         display: grid;
         grid-template-columns: 1fr 1.61fr 1fr;
         gap: 8px;
-        padding: 18px 8px 8px;
+        padding: 8px;
     }
 
         .controls button,
@@ -674,12 +663,6 @@ h2 {
             padding: 10px 8px;
             font-size: 0.9rem;
         }
-
-    .health-readout {
-        top: 5px;
-        right: 8px;
-        font-size: 0.66rem;
-    }
 
     .utility-bar {
         flex-direction: column;

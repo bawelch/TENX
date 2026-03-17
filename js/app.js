@@ -62,7 +62,6 @@
 
     const els = {
         healthBar: document.getElementById("healthBar"),
-        healthReadout: document.getElementById("healthReadout"),
         modeSelect: document.getElementById("modeSelect"),
         modeDescription: document.getElementById("modeDescription"),
         poolControlGroup: document.getElementById("poolControlGroup"),
@@ -124,7 +123,6 @@
     function renderHealthBar() {
         const hpPercent = state.maxHp > 0 ? (state.hp / state.maxHp) * 100 : 0;
         els.healthBar.style.width = `${hpPercent}%`;
-        els.healthReadout.textContent = `${state.hp} / ${state.maxHp} HP`;
     }
     function getNameStats(value) {
         const normalized = normaliseText(value);

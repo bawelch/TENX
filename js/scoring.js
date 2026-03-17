@@ -6,8 +6,8 @@ window.TOP_TEN_SCORING = {
     },
 
     discoveryWeights: {
-        green: { 1: 140, 2: 110, 3: 80, 4: 50, 5: 30 },
-        yellow: { 1: 50, 2: 40, 3: 30, 4: 20, 5: 10 }
+        green: { 1: 100, 2: 90, 3: 85, 4: 80, 5: 75 },
+        yellow: { 1: 75, 2: 65, 3: 60, 4: 55, 5: 50 }
     },
 
     getBoardScore(statuses) {
@@ -55,4 +55,4 @@ window.TOP_TEN_SCORING = {
 
         return output;
     }
-};2
+};
