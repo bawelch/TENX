@@ -65,6 +65,7 @@
     };
 
     const els = {
+        gameTitleBtn: document.getElementById("gameTitleBtn"),
         xpScore: document.getElementById("xpScore"),
         healthBar: document.getElementById("healthBar"),
         modeSelect: document.getElementById("modeSelect"),
