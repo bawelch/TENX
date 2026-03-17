@@ -4,7 +4,7 @@
         n: 1, o: 1, p: 3, q: 10, r: 1, s: 1, t: 1, u: 1, v: 4, w: 4, x: 8, y: 4, z: 10
     };
     const BASE_LEVEL_XP = 100;
-    const LEVEL_SCALING = 2;
+    const LEVEL_SCALING = 1.5;
     const MAX_ATTEMPTS = 3;
 
     const GAME_MODES = {
@@ -81,9 +81,7 @@
         resetBtn: document.getElementById("resetBtn"),
         message: document.getElementById("message"),
         eliminatedCount: document.getElementById("eliminatedCount"),
-        scoreGrid: document.getElementById("scoreGrid"),
-        finalBoardScore: document.getElementById("finalBoardScore"),
-        discoveryScore: document.getElementById("discoveryScore"),
+        metaBarFill: document.getElementById("metaBarFill"),
         totalScore: document.getElementById("totalScore"),
         scoringDetail: document.getElementById("scoringDetail"),
         solutionWrap: document.getElementById("solutionWrap"),
@@ -131,6 +129,19 @@
         state.bankedCoins += roundBoardScore;
         state.bankedXp += roundDiscoveryScore;
         state.roundBanked = true;
+    }
+    function renderMetaBar() {
+        const totalCoins = getCoinsTotal();
+        const totalXp = getXpTotal();
+        const levelInfo = getLevelInfo(totalXp);
+
+        els.totalScore.textContent = String(totalCoins);
+        els.eliminatedCount.textContent = `${state.eliminated.size}`;
+        els.xpScore.textContent = `${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)`;
+
+        if (els.metaBarFill) {
+            els.metaBarFill.style.width = `${levelInfo.progressPct}%`;
+        }
     }
     function getLevelInfo(xp, baseLevelXp = BASE_LEVEL_XP, levelScaling = LEVEL_SCALING) {
         const level = Math.floor(Math.pow(Math.max(0, xp), 1 / levelScaling) / baseLevelXp) + 1;
@@ -394,6 +405,7 @@
         const correctAnswers = getCorrectAnswers(question);
         const mode = getModeConfig();
         renderHealthBar();
+        renderMetaBar();
         els.title.textContent = question.title;
         els.subtitle.textContent = question.description;
         els.submitBtn.textContent = `Submit - ${state.attemptsUsed}/${MAX_ATTEMPTS}`;
@@ -404,8 +416,6 @@
         els.poolSelect.disabled = !mode.debugTools;
         els.questionSelect.disabled = !mode.debugTools;
         els.randomQuestionBtn.disabled = !mode.debugTools;
-
-        els.scoreGrid.hidden = !mode.scoring;
         els.scoringDetail.hidden = !mode.debugTools;
 
         if (mode.scoring) {
@@ -463,20 +473,10 @@
     }
 
     function renderScorePanel() {
-        const boardScore = window.TOP_TEN_SCORING.getBoardScore(state.statuses);
-        const discoveryScore = window.TOP_TEN_SCORING.getDiscoveryScore(state.answerMilestones);
-
-        const totalCoins = getCoinsTotal();
-        const totalXp = getXpTotal();
-        const levelInfo = getLevelInfo(totalXp);
-
-        els.finalBoardScore.textContent = String(boardScore);
-        els.discoveryScore.textContent = String(discoveryScore);
-        els.totalScore.textContent = String(totalCoins);
-        els.xpScore.textContent = `${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)`;
-
         const boardBreakdown = window.TOP_TEN_SCORING.getBoardBreakdown(state.statuses);
         const discoveryBreakdown = window.TOP_TEN_SCORING.getDiscoveryBreakdown(state.answerMilestones);
+        const totalXp = getXpTotal();
+        const levelInfo = getLevelInfo(totalXp);
 
         const greenDiscovery = Object.entries(discoveryBreakdown.greenByTurn)
             .map(([turn, count]) => `G${turn}: ${count}`)
@@ -489,7 +489,7 @@
       <div><strong>Board:</strong> ${boardBreakdown.green} green, ${boardBreakdown.yellow} yellow, ${boardBreakdown.red} red</div>
       <div><strong>Discovery:</strong> ${greenDiscovery}</div>
       <div><strong>Yellow discovery:</strong> ${yellowDiscovery}</div>
-      <div><strong>Total XP:</strong> ${totalXp} → Level ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}% to next)</div>
+      <div><strong>Level:</strong> ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}% to next)</div>
     `;
     }
     function pickRandomQuestionForCurrentPool() {
