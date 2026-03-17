@@ -1,8 +1,8 @@
 window.TOP_TEN_SCORING = {
     boardWeights: {
-        green: 120,
-        yellow: 45,
-        red: -15
+        green: 1,
+        yellow: 1,
+        red: 0
     },
 
     discoveryWeights: {
@@ -34,7 +34,9 @@ window.TOP_TEN_SCORING = {
                 ? (this.discoveryWeights.green[milestone.firstGreenTurn] || 0)
                 : 0;
 
-            return sum + yellowScore + greenScore;
+            // If an answer eventually turns green, replace any held yellow score
+            // instead of stacking yellow + green.
+            return sum + (greenScore || yellowScore);
         }, 0);
     },
 
@@ -45,11 +47,11 @@ window.TOP_TEN_SCORING = {
         };
 
         Object.values(answerMilestones).forEach((milestone) => {
-            if (milestone.firstYellowTurn) {
-                output.yellowByTurn[milestone.firstYellowTurn] += 1;
-            }
             if (milestone.firstGreenTurn) {
                 output.greenByTurn[milestone.firstGreenTurn] += 1;
+            } else if (milestone.firstYellowTurn) {
+                // Only count yellow if it never later became green
+                output.yellowByTurn[milestone.firstYellowTurn] += 1;
             }
         });
 

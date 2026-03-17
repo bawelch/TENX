@@ -48,6 +48,7 @@
         guesses: [],
         statuses: [],
         locked: [],
+        excludedByIndex: [],
         attemptsUsed: 0,
         eliminated: new Set(),
         priority: new Set(),
@@ -287,6 +288,7 @@
         state.guesses = Array(answers.length).fill("");
         state.statuses = Array(answers.length).fill("empty");
         state.locked = Array(answers.length).fill(false);
+        state.excludedByIndex = Array.from({ length: answers.length }, () => new Set());
         state.attemptsUsed = 0;
         state.eliminated = new Set();
         state.priority = new Set();
@@ -473,10 +475,14 @@
         const search = els.pickerSearch.value.trim().toLowerCase();
         const currentGuess = state.activeIndex != null ? state.guesses[state.activeIndex] : "";
         const unavailable = getUnavailableAnswers(state.activeIndex);
+        const excludedHere = state.activeIndex != null
+            ? state.excludedByIndex[state.activeIndex]
+            : new Set();
 
         const options = pool.items.filter((answer) => {
             if (state.eliminated.has(answer) && answer !== currentGuess) return false;
             if (unavailable.has(answer) && answer !== currentGuess) return false;
+            if (excludedHere.has(answer) && answer !== currentGuess) return false;
             if (!search) return true;
             return answer.toLowerCase().includes(search);
         });
@@ -609,6 +615,12 @@
 
             state.statuses[index] = "red";
 
+            // Exclude this answer from being chosen again for this same rank
+            if (state.excludedByIndex[index]) {
+                state.excludedByIndex[index].add(guess);
+            }
+
+            // Only eliminate globally if it is not a valid top-10 answer anywhere
             if (!correctAnswers.includes(guess)) {
                 state.eliminated.add(guess);
             }
