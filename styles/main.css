@@ -426,32 +426,28 @@ button {
 
 .meta-bar-wrap {
     position: relative;
-    display: flex;
-    align-items: stretch;
     overflow: hidden;
-    min-height: 72px;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 14px;
     background: rgba(20, 24, 31, 0.95);
 }
 
 .meta-bar {
-    position: relative;
-    z-index: 1;
     display: flex;
     width: 100%;
 }
 
     .meta-bar.two-up .meta-stat {
-        flex: 1;
+        width: 50%;
+        flex: 0 0 50%;
     }
 
 .meta-stat {
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 10px 12px;
+    min-height: 34px;
+    padding: 6px 12px;
     background: transparent;
 }
 
@@ -459,27 +455,28 @@ button {
         border-left: 1px solid rgba(255, 255, 255, 0.14);
     }
 
-.meta-stat-small {
-    flex: 1;
+.meta-readout {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    text-align: center;
 }
 
-.meta-stat-large {
-    flex: 1.618;
-}
-
-.meta-label {
-    margin-bottom: 6px;
-    font-size: 0.78rem;
+.meta-readout-label {
+    font-size: 0.9rem;
+    font-weight: 600;
     line-height: 1;
-    letter-spacing: 0.04em;
+    letter-spacing: 0;
     text-transform: uppercase;
-    opacity: 0.78;
+    opacity: 0.9;
 }
 
-.meta-value {
-    font-size: 1.05rem;
+.meta-readout-value {
+    font-size: 1rem;
     font-weight: 700;
-    line-height: 1.1;
+    line-height: 1;
 }
 
 /* Metrics / scoring */
