@@ -515,8 +515,14 @@
             : "Prioritised answers are shared across all active ranks. Yellow hints only confirm top-10 membership.";
         els.pickerSearch.value = "";
         els.pickerOverlay.classList.add("show");
+
         renderPickerOptions();
-        requestAnimationFrame(() => els.pickerSearch.focus());
+        els.pickerOptions.scrollTop = 0;
+
+        requestAnimationFrame(() => {
+            els.pickerSearch.focus();
+            els.pickerOptions.scrollTop = 0;
+        });
     }
 
     function closePicker() {
