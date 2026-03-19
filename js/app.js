@@ -6,6 +6,8 @@
     const BASE_LEVEL_XP = 100;
     const LEVEL_SCALING = 1.5;
     const MAX_ATTEMPTS = 3;
+    const DEFAULT_START_QUESTION_ID = "films_most_oscar_wins_best_picture_nominees";
+    let hasUsedDefaultStartQuestion = false;
 
     const GAME_MODES = {
         classic_plus: {
@@ -60,7 +62,7 @@
         hp: 100,
         maxHp: 100,
         bankedCoins: 0,
-        bankedXp: 500,
+        bankedXp: 250,
         roundHpApplied: false,
     };
 
@@ -142,6 +144,34 @@
 
         return Math.max(0, Math.min(state.maxHp, state.hp + delta));
     }
+    function getQuestionById(questionId) {
+        if (!Array.isArray(window.TOP_TEN_QUESTIONS)) return null;
+        return window.TOP_TEN_QUESTIONS.find(q => q.id === questionId) || null;
+    }
+    function getNextQuestion() {
+        if (!hasUsedDefaultStartQuestion) {
+            const defaultQuestion = getQuestionById(DEFAULT_START_QUESTION_ID);
+            hasUsedDefaultStartQuestion = true;
+
+            if (defaultQuestion) {
+                return defaultQuestion;
+            }
+
+            console.warn(`Default start question not found: ${DEFAULT_START_QUESTION_ID}`);
+        }
+
+        return getRandomQuestion();
+    }
+    function getTitlePhraseForLevel(level) {
+        const phrases = window.TOP_TEN_LEVEL_TEXT || [];
+
+        if (!phrases.length) {
+            return "";
+        }
+
+        const index = Math.max(0, Math.min(level - 1, phrases.length - 1));
+        return phrases[index];
+    }
     function fillEmptyGuessesAtRandom() {
         const unlockedEmptyIndexes = state.guesses
             .map((guess, index) => ({ guess, index }))
@@ -198,7 +228,8 @@
         els.accuracyScore.textContent = `${getAccuracyScore().toFixed(2)}%`;
 
         if (els.gameTitle) {
-            els.gameTitle.textContent = `THINKER - LEVEL ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)`;
+            const titlePhrase = getTitlePhraseForLevel(levelInfo.level);
+            els.gameTitle.textContent = `LEVEL ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)${titlePhrase ? ` - ${titlePhrase}` : ""}`;
         }
 
         if (els.titleLevelFill) {
@@ -338,6 +369,10 @@
     function getCorrectAnswers(question) {
         if (Array.isArray(question.correctAnswers) && question.correctAnswers.length) {
             return question.correctAnswers.slice();
+        }
+
+        if (Array.isArray(question.answers) && question.answers.length) {
+            return question.answers.slice();
         }
 
         const pool = getPool(question.poolId);
@@ -898,8 +933,15 @@
 
     function init() {
         buildModeSelect();
+
+        const startQuestion = getNextQuestion();
+
+        if (startQuestion) {
+            state.questionId = startQuestion.id;
+            state.poolId = startQuestion.poolId;
+        }
+
         buildPoolSelect();
-        pickRandomQuestionForCurrentPool();
         buildQuestionSelect();
         bindEvents();
         resetGame();

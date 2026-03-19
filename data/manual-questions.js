@@ -8,8 +8,8 @@
             id: "countries_population_top10_worldbank_2022",
             poolId: "countries_all",
             label: "Most populous countries",
-            title: "Top 10 most populous countries in the world",
-            description: "Rank the 10 most populous countries.",
+            title: "Most populated countries",
+            description: "Where all the peeps at?",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -41,8 +41,8 @@
             id: "countries_population_bottom10_worldometer_2026",
             poolId: "countries_all",
             label: "Least populous countries",
-            title: "Top 10 least populous countries in the world",
-            description: "Rank the 10 least populous countries in the countries pool.",
+            title: "Least populated countries",
+            description: "Easy targets",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -74,8 +74,8 @@
             id: "countries_land_area_top10_worldometer",
             poolId: "countries_all",
             label: "Largest land area",
-            title: "Top 10 largest countries by land area",
-            description: "Rank the 10 countries with the largest land area.",
+            title: "Largest countries (by land area)",
+            description: "Room to store all their shit",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -107,11 +107,12 @@
             id: "countries_land_area_bottom10_worldometer",
             poolId: "countries_all",
             label: "Smallest land area",
-            title: "Top 10 smallest countries by land area",
-            description: "Rank the 10 countries with the smallest land area.",
+            title: "Smallest countries (by land area)",
+            description: "Cosy",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
+                "Vatican City",
                 "Monaco",
                 "Nauru",
                 "Tuvalu",
@@ -121,10 +122,10 @@
                 "Saint Kitts and Nevis",
                 "Maldives",
                 "Malta",
-                "Grenada"
             ],
             correctTexts: [
-                "1 km²",
+                "0.5 km²",
+                "2 km²",
                 "20 km²",
                 "30 km²",
                 "60 km²",
@@ -132,16 +133,15 @@
                 "180 km²",
                 "260 km²",
                 "300 km²",
-                "320 km²",
-                "340 km²"
+                "320 km²"
             ]
         },
         {
             id: "countries_gdp_per_capita_top10_imf_2026",
             poolId: "countries_all",
             label: "Highest GDP per capita",
-            title: "Top 10 countries by nominal GDP per capita",
-            description: "Rank the 10 countries with the highest nominal GDP per capita.",
+            title: "Countries by GDP per capita",
+            description: "Follow the money",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -173,8 +173,8 @@
             id: "countries_gdp_per_capita_bottom10_imf_2026",
             poolId: "countries_all",
             label: "Lowest GDP per capita",
-            title: "Top 10 countries with the lowest nominal GDP per capita",
-            description: "Rank the 10 countries with the lowest nominal GDP per capita.",
+            title: "Lowest GDP per capita",
+            description: "Po fo sho",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -206,8 +206,8 @@
             id: "countries_life_expectancy_top10_worldometer_2026",
             poolId: "countries_all",
             label: "Highest life expectancy",
-            title: "Top 10 countries by life expectancy",
-            description: "Rank the 10 countries with the highest life expectancy at birth.",
+            title: "Life expectancy",
+            description: "Strong genes (and healthcare)",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -239,8 +239,8 @@
             id: "countries_life_expectancy_bottom10_worldometer_2026",
             poolId: "countries_all",
             label: "Lowest life expectancy",
-            title: "Top 10 countries with the lowest life expectancy",
-            description: "Rank the 10 countries with the lowest life expectancy at birth.",
+            title: "Lowest life expectancy",
+            description: "Life on tough mode",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -272,8 +272,8 @@
             id: "countries_coastline_bottom10_cia",
             poolId: "countries_all",
             label: "Shortest coastline",
-            title: "Top 10 shortest coastlines (excluding landlocked countries)",
-            description: "Rank the 10 countries with the shortest non-zero coastlines. Landlocked countries are excluded.",
+            title: "Countries with the shortest coastlines",
+            description: "Landlocked countries are excluded",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -305,8 +305,8 @@
             id: "countries_population_density_top10_2026",
             poolId: "countries_all",
             label: "Highest population density",
-            title: "Top 10 countries by population density",
-            description: "Rank the 10 countries with the highest population density.",
+            title: "Countries by population density",
+            description: "Tight squeeze",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -338,8 +338,8 @@
             id: "countries_population_density_bottom10_2026",
             poolId: "countries_all",
             label: "Lowest population density",
-            title: "Top 10 countries with the lowest population density",
-            description: "Rank the 10 countries with the lowest population density.",
+            title: "Lowest population density",
+            description: "Spread your legs",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -371,8 +371,8 @@
             id: "countries_temperature_top10_worldbank_cru",
             poolId: "countries_all",
             label: "Hottest countries",
-            title: "Top 10 hottest countries by average yearly temperature",
-            description: "Rank the 10 hottest countries by average yearly temperature.",
+            title: "Hottest countries (av yearly temp)",
+            description: "The mosty toasty",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -404,8 +404,8 @@
             id: "countries_temperature_bottom10_worldbank_cru",
             poolId: "countries_all",
             label: "Coldest countries",
-            title: "Top 10 coldest countries by average yearly temperature",
-            description: "Rank the 10 coldest countries by average yearly temperature.",
+            title: "Coldest countries (av yearly temp)",
+            description: "Bits will freeze off",
             rankingMode: "fixed",
             topN: 10,
             correctAnswers: [
@@ -464,6 +464,66 @@
                 "#8",
                 "#9",
                 "#10"
+            ]
+        },
+
+        {
+            id: "cities_population_top10_world_urban_2025",
+            poolId: "cities_top100_world_urban_2025",
+            label: "Most populated cities",
+            title: "Most populated cities in the world",
+            description: "People magnets",
+            answers: [
+                "Jakarta",
+                "Dhaka",
+                "Tokyo",
+                "New Delhi",
+                "Shanghai",
+                "Guangzhou",
+                "Cairo",
+                "Manila",
+                "Kolkata",
+                "Seoul"
+            ]
+        },
+
+        {
+            id: "albums_bestselling_top10_alltime",
+            poolId: "albums_top100_bestselling_alltime",
+            label: "Best-selling albums",
+            title: "Top 10 best-selling albums of all time",
+            description: "Streaming killed the video star",
+            answers: [
+                "Thriller",
+                "The Dark Side Of The Moon",
+                "The Bodyguard [OST]",
+                "Grease [OST]",
+                "Rumours",
+                "Back In Black",
+                "Led Zeppelin IV",
+                "Saturday Night Fever [OST]",
+                "Bad",
+                "Jagged Little Pill"
+            ]
+        },
+
+        {
+            id: "films_most_oscar_wins_best_picture_nominees",
+            poolId: "best_picture_nominees_all_time",
+            label: "Most Oscar wins per film",
+            title: "Films with the most Oscar wins",
+            description: "So many speeches",
+            answers: [
+                "Titanic",
+                "Ben-Hur",
+                "The Lord of the Rings: The Return of the King",
+                "West Side Story [1961]",
+                "The English Patient",
+                "Gigi",
+                "The Last Emperor",
+                "From Here to Eternity",
+                "Gone with the Wind",
+                "My Fair Lady"
             ]
         }
     ];

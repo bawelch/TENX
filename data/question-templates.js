@@ -50,7 +50,7 @@ window.TOP_TEN_QUESTION_TEMPLATES = [
   {
     id: "scrabble_desc",
     label: "Highest Scrabble score",
-    promptBuilder: (pool) => `Top 10 ${pool.pluralLabel} in this answer pool by Scrabble value of the name`,
+    promptBuilder: (pool) => `Top 10 ${pool.pluralLabel} by Scrabble value`,
     description: "Standard English Scrabble letter values.",
     sortDirection: "desc",
     metric: "scrabble"
