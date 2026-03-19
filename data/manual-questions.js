@@ -432,6 +432,39 @@
                 "3.85°C",
                 "6.34°C"
             ]
+        },
+        {
+            id: "agatha_christie_bestsellers_top10",
+            poolId: "agatha_christie_bestsellers",
+            label: "Best-selling Agatha Christie books",
+            title: "Top 10 best-selling Agatha Christie books",
+            description: "Rank the 10 Agatha Christie novels by approximate lifetime worldwide commercial success.",
+            rankingMode: "fixed",
+            topN: 10,
+            correctAnswers: [
+                "And Then There Were None",
+                "Murder on the Orient Express",
+                "The Murder of Roger Ackroyd",
+                "Death on the Nile",
+                "The A.B.C. Murders",
+                "The Murder at the Vicarage",
+                "The Body in the Library",
+                "Endless Night",
+                "Cards on the Table",
+                "The Mysterious Affair at Styles"
+            ],
+            correctTexts: [
+                "#1",
+                "#2",
+                "#3",
+                "#4",
+                "#5",
+                "#6",
+                "#7",
+                "#8",
+                "#9",
+                "#10"
+            ]
         }
     ];
 

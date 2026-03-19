@@ -134,6 +134,42 @@
 
         return (coins / denominator) * 100;
     }
+    function fillEmptyGuessesAtRandom() {
+        const unlockedEmptyIndexes = state.guesses
+            .map((guess, index) => ({ guess, index }))
+            .filter(({ guess, index }) => !state.locked[index] && !guess)
+            .map(({ index }) => index);
+
+        if (!unlockedEmptyIndexes.length) {
+            return;
+        }
+
+        const chosenThisPass = new Set();
+
+        unlockedEmptyIndexes.forEach((index) => {
+            const currentGuess = state.guesses[index];
+            const unavailable = getUnavailableAnswers(index);
+            const excludedHere = state.excludedByIndex[index] || new Set();
+
+            const options = getAnswerPoolForCurrentQuestion().items.filter((answer) => {
+                if (answer === currentGuess) return true;
+                if (state.eliminated.has(answer)) return false;
+                if (unavailable.has(answer)) return false;
+                if (excludedHere.has(answer)) return false;
+                if (chosenThisPass.has(answer)) return false;
+                return true;
+            });
+
+            if (!options.length) {
+                return;
+            }
+
+            const randomAnswer = options[Math.floor(Math.random() * options.length)];
+            state.guesses[index] = randomAnswer;
+            state.statuses[index] = "empty";
+            chosenThisPass.add(randomAnswer);
+        });
+    }
     function bankCurrentRoundScores() {
         if (state.roundBanked) return;
 
@@ -154,7 +190,7 @@
         els.accuracyScore.textContent = `${getAccuracyScore().toFixed(2)}%`;
 
         if (els.gameTitle) {
-            els.gameTitle.textContent = `TENNER - LEVEL ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)`;
+            els.gameTitle.textContent = `THINKER - LEVEL ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}%)`;
         }
 
         if (els.titleLevelFill) {
@@ -193,7 +229,9 @@
 
         return `rgba(${color.r}, ${color.g}, ${color.b}, 0.95)`;
     }
-
+    function isSubmitInactive() {
+        return state.finished;
+    }
     function getHpFillColor(hpPercent) {
         const t = Math.max(0, Math.min(100, hpPercent));
 
@@ -459,7 +497,13 @@
         });
 
         els.submitBtn.addEventListener("click", submitGuesses);
-        els.resetBtn.addEventListener("click", resetGame);
+        els.resetBtn.addEventListener("click", (event) => {
+            if (els.resetBtn.disabled || state.finished) {
+                event.preventDefault();
+                return;
+            }
+            clearUnconfirmedGuesses();
+        });
         els.closePickerBtn.addEventListener("click", closePicker);
         els.pickerOverlay.addEventListener("click", (event) => {
             if (event.target === els.pickerOverlay) closePicker();
@@ -474,18 +518,21 @@
         const question = getQuestion(state.questionId);
         const correctAnswers = getCorrectAnswers(question);
         const mode = getModeConfig();
+        const submitInactive = state.finished;
+
         renderHealthBar();
         renderMetaBar();
+
         els.title.textContent = question.title;
         els.subtitle.textContent = question.description;
         els.submitBtn.textContent = `Submit - ${state.attemptsUsed}/${MAX_ATTEMPTS}`;
-        //els.eliminatedCount.textContent = `${state.eliminated.size}`;
-        els.submitBtn.disabled = state.finished;
+        els.submitBtn.disabled = submitInactive;
+        els.resetBtn.disabled = submitInactive;
         els.modeDescription.textContent = mode.description;
 
         els.poolSelect.disabled = !mode.debugTools;
         els.questionSelect.disabled = !mode.debugTools;
-        //els.randomQuestionBtn.disabled = !mode.debugTools;
+        // els.randomQuestionBtn.disabled = !mode.debugTools;
         els.scoringDetail.hidden = !mode.debugTools;
 
         if (mode.scoring) {
@@ -670,7 +717,21 @@
             });
         });
     }
+    function clearUnconfirmedGuesses() {
+        if (state.finished || els.resetBtn.disabled) return;
 
+        state.guesses = state.guesses.map((guess, index) => {
+            const status = state.statuses[index];
+            return (status === "green" || status === "yellow") ? guess : "";
+        });
+
+        state.statuses = state.statuses.map((status) => {
+            return (status === "green" || status === "yellow") ? status : "empty";
+        });
+
+        render();
+        closePicker();
+    }
     function chooseAnswer(answer) {
         if (state.activeIndex == null) return;
         state.guesses[state.activeIndex] = answer;
@@ -684,13 +745,17 @@
 
         const mode = getModeConfig();
 
-        const missing = state.guesses
+        fillEmptyGuessesAtRandom();
+
+        const stillMissing = state.guesses
             .map((guess, index) => ({ guess, index }))
             .filter(({ guess, index }) => !state.locked[index] && !guess)
             .map(({ index }) => index + 1);
 
-        if (missing.length) {
-            setMessage(`Fill every unlocked rank before submitting. Missing: ${missing.join(", ")}.`, "error");
+        if (stillMissing.length) {
+            setMessage(`Could not auto-fill every empty rank. Missing: ${stillMissing.join(", ")}.`, "error");
+            render();
+            closePicker();
             return;
         }
 
@@ -735,12 +800,10 @@
 
             state.statuses[index] = "red";
 
-            // Exclude this answer from being chosen again for this same rank
             if (state.excludedByIndex[index]) {
                 state.excludedByIndex[index].add(guess);
             }
 
-            // Only eliminate globally if it is not a valid top-10 answer anywhere
             if (!correctAnswers.includes(guess)) {
                 state.eliminated.add(guess);
             }
@@ -753,7 +816,6 @@
             state.solved = true;
             state.finished = true;
             applyRoundHpChange();
-            //awardRoundScoresOnce();
             revealSolution(false);
             setMessage(
                 mode.scoring
@@ -764,7 +826,6 @@
         } else if (attemptsLeft === 0) {
             state.finished = true;
             applyRoundHpChange();
-            //awardRoundScoresOnce();
             revealSolution(true);
             setMessage(
                 mode.scoring
