@@ -358,7 +358,17 @@
     function getAnswerPoolForCurrentQuestion() {
         return getPool(state.poolId);
     }
+    function getRandomQuestion() {
+        const questions = Array.isArray(window.TOP_TEN_QUESTIONS)
+            ? window.TOP_TEN_QUESTIONS
+            : [];
 
+        if (!questions.length) {
+            return null;
+        }
+
+        return questions[Math.floor(Math.random() * questions.length)];
+    }
     function compareValues(a, b, sortDirection) {
         if (typeof a === "string" && typeof b === "string") {
             return sortDirection === "asc" ? a.localeCompare(b) : b.localeCompare(a);
@@ -539,11 +549,21 @@
 
         els.randomQuestionBtn.addEventListener("click", () => {
             if (!getModeConfig().debugTools) return;
-            const questions = getQuestionsForPool(state.poolId);
-            const next = questions[Math.floor(Math.random() * questions.length)];
-            state.questionId = next.id;
-            els.questionSelect.value = state.questionId;
+
             bankCurrentRoundScores();
+
+            const next = getRandomQuestion();
+            if (!next) return;
+
+            state.questionId = next.id;
+            state.poolId = next.poolId;
+
+            buildPoolSelect();
+            buildQuestionSelect();
+
+            els.poolSelect.value = state.poolId;
+            els.questionSelect.value = state.questionId;
+
             resetGame();
         });
 
@@ -671,16 +691,16 @@
       <div><strong>Level:</strong> ${levelInfo.level} (${Math.floor(levelInfo.progressPct)}% to next)</div>
     `;
     }
-    function pickRandomQuestionForCurrentPool() {
-        const questions = getQuestionsForPool(state.poolId);
+    function pickRandomQuestion() {
+        const next = getRandomQuestion();
 
-        if (!questions.length) {
+        if (!next) {
             state.questionId = null;
             return;
         }
 
-        const next = questions[Math.floor(Math.random() * questions.length)];
         state.questionId = next.id;
+        state.poolId = next.poolId;
     }
     function getUnavailableAnswers(currentIndex) {
         return new Set(
