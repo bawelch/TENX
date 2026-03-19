@@ -577,6 +577,10 @@
                 "The English Patient",
                 "Gigi",
                 "The Last Emperor",
+                "Slumdog Millionaire",
+                "Amadeus",
+                "Gandhi",
+                "Cabaret",
                 "From Here to Eternity",
                 "Gone with the Wind",
                 "My Fair Lady"
@@ -589,6 +593,10 @@
                 "9",
                 "9",
                 "9",
+                "8",
+                "8",
+                "8",
+                "8",
                 "8",
                 "8",
                 "8"
