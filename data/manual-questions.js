@@ -579,6 +579,7 @@
                 "The Last Emperor",
                 "Slumdog Millionaire",
                 "Amadeus",
+                "On the Waterfront",
                 "Gandhi",
                 "Cabaret",
                 "From Here to Eternity",
