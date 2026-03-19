@@ -433,39 +433,39 @@
                 "6.34°C"
             ]
         },
-        {
-            id: "agatha_christie_bestsellers_top10",
-            poolId: "agatha_christie_bestsellers",
-            label: "Best-selling Agatha Christie books",
-            title: "Top 10 best-selling Agatha Christie books",
-            description: "Rank the 10 Agatha Christie novels by approximate lifetime worldwide commercial success.",
-            rankingMode: "fixed",
-            topN: 10,
-            correctAnswers: [
-                "And Then There Were None",
-                "Murder on the Orient Express",
-                "The Murder of Roger Ackroyd",
-                "Death on the Nile",
-                "The A.B.C. Murders",
-                "The Murder at the Vicarage",
-                "The Body in the Library",
-                "Endless Night",
-                "Cards on the Table",
-                "The Mysterious Affair at Styles"
-            ],
-            correctTexts: [
-                "#1",
-                "#2",
-                "#3",
-                "#4",
-                "#5",
-                "#6",
-                "#7",
-                "#8",
-                "#9",
-                "#10"
-            ]
-        },
+        //{
+        //    id: "agatha_christie_bestsellers_top10",
+        //    poolId: "agatha_christie_bestsellers",
+        //    label: "Best-selling Agatha Christie books",
+        //    title: "Top 10 best-selling Agatha Christie books",
+        //    description: "Rank the 10 Agatha Christie novels by approximate lifetime worldwide commercial success.",
+        //    rankingMode: "fixed",
+        //    topN: 10,
+        //    correctAnswers: [
+        //        "And Then There Were None",
+        //        "Murder on the Orient Express",
+        //        "The Murder of Roger Ackroyd",
+        //        "Death on the Nile",
+        //        "The A.B.C. Murders",
+        //        "The Murder at the Vicarage",
+        //        "The Body in the Library",
+        //        "Endless Night",
+        //        "Cards on the Table",
+        //        "The Mysterious Affair at Styles"
+        //    ],
+        //    correctTexts: [
+        //        "#1",
+        //        "#2",
+        //        "#3",
+        //        "#4",
+        //        "#5",
+        //        "#6",
+        //        "#7",
+        //        "#8",
+        //        "#9",
+        //        "#10"
+        //    ]
+        //},
 
         {
             id: "cities_population_top10_world_urban_2025",
@@ -484,6 +484,18 @@
                 "Manila",
                 "Kolkata",
                 "Seoul"
+            ],
+            correctTexts: [
+                "41.9m",
+                "36.6m",
+                "33.4m",
+                "30.2m",
+                "29.6m",
+                "27.6m",
+                "25.6m",
+                "24.7m",
+                "22.5m",
+                "22.5m"
             ]
         },
 
@@ -504,9 +516,53 @@
                 "Saturday Night Fever [OST]",
                 "Bad",
                 "Jagged Little Pill"
+            ],
+            correctTexts: [
+                "68.8m",
+                "46.4m",
+                "41.5m",
+                "38.4m",
+                "38.2m",
+                "37.4m",
+                "37.4m",
+                "35.0m",
+                "34.3m",
+                "34.1m"
             ]
         },
-
+        {
+            id: "films_most_oscar_nominations_best_picture_nominees",
+            poolId: "best_picture_nominees_all_time",
+            label: "Most Oscar nominations per film",
+            title: "Films with the most Oscar nominations",
+            description: "So many envelopes",
+            answers: [
+                "Sinners",
+                "All About Eve",
+                "Titanic",
+                "La La Land",
+                "From Here to Eternity",
+                "Gone with the Wind",
+                "Oppenheimer",
+                "Shakespeare in Love",
+                "Chicago",
+                "Forrest Gump",
+                "Mary Poppins"
+            ],
+            correctTexts: [
+                "16",
+                "14",
+                "14",
+                "14",
+                "13",
+                "13",
+                "13",
+                "13",
+                "13",
+                "13",
+                "13"
+            ]
+        },
         {
             id: "films_most_oscar_wins_best_picture_nominees",
             poolId: "best_picture_nominees_all_time",
@@ -524,6 +580,18 @@
                 "From Here to Eternity",
                 "Gone with the Wind",
                 "My Fair Lady"
+            ],
+            correctTexts: [
+                "11",
+                "11",
+                "11",
+                "10",
+                "9",
+                "9",
+                "9",
+                "8",
+                "8",
+                "8"
             ]
         }
     ];
