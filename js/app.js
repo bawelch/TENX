@@ -45,7 +45,7 @@
     const state = {
         poolId: window.TOP_TEN_ANSWER_POOLS[0].id,
         questionId: null,
-        mode: "modern_plus",
+        mode: "debug",
         guesses: [],
         statuses: [],
         locked: [],
@@ -68,6 +68,7 @@
         gameTitleBtn: document.getElementById("gameTitleBtn"),
         xpScore: document.getElementById("xpScore"),
         healthBar: document.getElementById("healthBar"),
+        healthPreviewBar: document.getElementById("healthPreviewBar"),
         modeSelect: document.getElementById("modeSelect"),
         modeDescription: document.getElementById("modeDescription"),
         poolControlGroup: document.getElementById("poolControlGroup"),
@@ -133,6 +134,13 @@
         }
 
         return (coins / denominator) * 100;
+    }
+    function getProjectedHpAfterRound() {
+        const greenCount = state.statuses.filter((status) => status === "green").length;
+        const redCount = state.statuses.filter((status) => status === "red").length;
+        const delta = (greenCount * 2) - (redCount * 10);
+
+        return Math.max(0, Math.min(state.maxHp, state.hp + delta));
     }
     function fillEmptyGuessesAtRandom() {
         const unlockedEmptyIndexes = state.guesses
@@ -270,8 +278,16 @@
     }
     function renderHealthBar() {
         const hpPercent = state.maxHp > 0 ? (state.hp / state.maxHp) * 100 : 0;
+        const projectedHp = getProjectedHpAfterRound();
+        const projectedPercent = state.maxHp > 0 ? (projectedHp / state.maxHp) * 100 : 0;
+
         els.healthBar.style.width = `${hpPercent}%`;
         els.healthBar.style.backgroundColor = getHpFillColor(hpPercent);
+
+        if (els.healthPreviewBar) {
+            els.healthPreviewBar.style.width = `${projectedPercent}%`;
+            els.healthPreviewBar.style.backgroundColor = getHpFillColor(projectedPercent);
+        }
     }
     function getNameStats(value) {
         const normalized = normaliseText(value);
