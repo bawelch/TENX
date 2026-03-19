@@ -525,14 +525,25 @@
 
         els.title.textContent = question.title;
         els.subtitle.textContent = question.description;
-        els.submitBtn.textContent = `Submit - ${state.attemptsUsed}/${MAX_ATTEMPTS}`;
+
+        const heartsRemaining = Math.max(0, MAX_ATTEMPTS - state.attemptsUsed);
+        const heartsHtml = Array.from({ length: MAX_ATTEMPTS }, (_, i) => {
+            return i < heartsRemaining
+                ? '<span class="submit-heart full">&#10084;</span>'
+                : '<span class="submit-heart empty">&#9825;</span>';
+        }).join("");
+
+        els.submitBtn.innerHTML = `
+        <span class="submit-label">Submit</span>
+        <span class="submit-hearts">${heartsHtml}</span>
+    `;
+
         els.submitBtn.disabled = submitInactive;
         els.resetBtn.disabled = submitInactive;
         els.modeDescription.textContent = mode.description;
 
         els.poolSelect.disabled = !mode.debugTools;
         els.questionSelect.disabled = !mode.debugTools;
-        // els.randomQuestionBtn.disabled = !mode.debugTools;
         els.scoringDetail.hidden = !mode.debugTools;
 
         if (mode.scoring) {

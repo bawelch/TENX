@@ -1,3 +1,10 @@
+/*@import url("./variables.css");
+@import url("./base.css");
+@import url("./layout.css");
+@import url("./game.css");
+@import url("./picker.css");*/
+
+
 :root {
     --bg: #0b1020;
     --panel: #121a2b;
@@ -193,7 +200,44 @@ button {
 .button-link {
     text-decoration: none;
 }
+#submitBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    line-height: 1;
+}
 
+.submit-label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+.submit-hearts {
+    gap: 3px;
+    font-size: 0.82rem;
+}
+.submit-hearts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 0.9rem;
+    line-height: 1;
+}
+
+.submit-heart {
+    display: inline-block;
+}
+
+    .submit-heart.full {
+        opacity: 1;
+    }
+
+    .submit-heart.empty {
+        opacity: 0.7;
+    }
 /* Game title / level bar */
 
 .game-title-wrap {
