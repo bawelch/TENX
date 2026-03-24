@@ -494,6 +494,24 @@
         //        "#10"
         //    ]
         //},
+        {
+            id: "girls_names_1974", poolid: "forenames", label: "1974", title: "1974 Girls' Names (UK)", description: "Not many Bessies", answers: ["Sarah","Claire","Nicola","Emma","Lisa","Joanne","Michelle","Helen","Samantha","Karen","Amanda","Rachel","Louise","Julie","Clare","Rebecca","Sharon","Victoria","Caroline","Susan"],correctTexts: ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th"]
+        },
+        {
+            id: "girls_names_1984", poolid: "forenames", label: "1984", title: "1984 Girls' Names (UK)", description: "Not many Gertrudes", answers: ["Sarah","Laura","Gemma","Emma","Rebecca","Claire","Victoria","Samantha","Rachel","Amy","Jennifer","Nicola","Katie","Lisa","Kelly","Natalie","Louise","Michelle","Hayley","Hannah"],correctTexts: ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th"]
+        },
+        {
+            id: "girls_names_1994", poolid: "forenames", label: "1994", title: "1994 Girls' Names (UK)", description: "Not many Mabels", answers: ["Rebecca","Lauren","Jessica","Charlotte","Hannah","Sophie","Amy","Emily","Laura","Emma","Chloe","Sarah","Lucy","Katie","Bethany","Jade","Megan","Alice","Rachel","Samantha"],correctTexts: ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th"]
+        },
+        {
+            id: "girls_names_2004", poolid: "forenames", label: "2004", title: "2004 Girls' Names (UK)", description: "Not many Almas",answers: ["Emily","Ellie","Jessica","Sophie","Chloe","Olivia","Lucy","Charlotte","Katie","Megan","Grace","Hannah","Amy","Ella","Mia","Lily","Holly","Amelia","Abigail","Emma"],correctTexts: ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th"]
+        },
+        {
+            id: "girls_names_2014", poolid: "forenames", label: "2014", title: "2014 Girls' Names (UK)", description: "Not many Berthas",answers: ["Amelia","Olivia","Isla","Emily","Poppy","Ava","Isabella","Jessica","Lily","Sophie","Grace","Sophia","Mia","Evie","Ruby","Ella","Scarlett","Isabelle","Chloe","Sienna"],correctTexts: ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th"]
+        },
+        {
+            id: "girls_names_mambo5", poolid: "forenames", label: "744", title: "Mambo #5 Names", description: "In order of appearance",answers: ["Angela","Pamela","Sandra","Rita","Monica","Erica","Tina","Mary","Jessica","You"," - "," - "," - "," - "," - "," - "," - "," - "," - "," - "],correctTexts: ["I like", "I like", "I like/In the sun", "I like/All I need", "In my life", "By my side", "What I see", "All night long", "Here I am", "Makes me your man", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-"]
+        },
 
         {
             id: "cities_population_top10_world_urban_2025",
