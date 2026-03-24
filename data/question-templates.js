@@ -54,7 +54,7 @@ window.TOP_TEN_QUESTION_TEMPLATES = [
     description: "Standard English Scrabble letter values.",
     sortDirection: "desc",
     metric: "scrabble"
-  //},
+  }
   //{
   //  id: "alphabetical_asc",
   //  label: "Alphabetically earliest",
@@ -78,5 +78,5 @@ window.TOP_TEN_QUESTION_TEMPLATES = [
   //  description: "Hyphenless word count separated by spaces.",
   //  sortDirection: "desc",
   //  metric: "words"
-  }
+  //}
 ];

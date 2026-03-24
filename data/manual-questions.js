@@ -12,6 +12,8 @@
             description: "Where all the peeps at?",
             rankingMode: "fixed",
             topN: 10,
+            target: 7,
+            display: 10,
             correctAnswers: [
                 "India",
                 "China",
@@ -45,6 +47,8 @@
             description: "Easy targets",
             rankingMode: "fixed",
             topN: 10,
+            target: 5,
+            display: 10,
             correctAnswers: [
                 "Tuvalu",
                 "Nauru",
@@ -78,6 +82,8 @@
             description: "Room to store all their shit",
             rankingMode: "fixed",
             topN: 10,
+            target: 7,
+            display: 10,
             correctAnswers: [
                 "Russia",
                 "Canada",
@@ -111,6 +117,8 @@
             description: "Cosy",
             rankingMode: "fixed",
             topN: 10,
+            target: 6,
+            display: 10,
             correctAnswers: [
                 "Vatican City",
                 "Monaco",
@@ -144,6 +152,8 @@
             description: "Follow the money",
             rankingMode: "fixed",
             topN: 10,
+            target: 6,
+            display: 10,
             correctAnswers: [
                 "Monaco",
                 "Liechtenstein",
@@ -177,6 +187,8 @@
             description: "Po fo sho",
             rankingMode: "fixed",
             topN: 10,
+            target: 6,
+            display: 10,
             correctAnswers: [
                 "South Sudan",
                 "Yemen",
@@ -210,6 +222,8 @@
             description: "Strong genes (and healthcare)",
             rankingMode: "fixed",
             topN: 10,
+            target: 6,
+            display: 10,
             correctAnswers: [
                 "Monaco",
                 "San Marino",
@@ -243,6 +257,8 @@
             description: "Life on tough mode",
             rankingMode: "fixed",
             topN: 10,
+            target: 6,
+            display: 10,
             correctAnswers: [
                 "Nigeria",
                 "Chad",
@@ -276,6 +292,8 @@
             description: "Landlocked countries are excluded",
             rankingMode: "fixed",
             topN: 10,
+            target: 6,
+            display: 10,
             correctAnswers: [
                 "Monaco",
                 "Bosnia and Herzegovina",
@@ -309,6 +327,8 @@
             description: "Tight squeeze",
             rankingMode: "fixed",
             topN: 10,
+            target: 6,
+            display: 10,
             correctAnswers: [
                 "Monaco",
                 "Singapore",
@@ -321,6 +341,8 @@
                 "Nauru",
                 "Rwanda"
             ],
+            target: 6,
+            display: 10,
             correctTexts: [
                 "25,562/km²",
                 "8,437/km²",
@@ -342,6 +364,8 @@
             description: "Spread your legs",
             rankingMode: "fixed",
             topN: 10,
+            target: 6,
+            display: 10,
             correctAnswers: [
                 "Mongolia",
                 "Australia",
@@ -375,6 +399,8 @@
             description: "The mosty toasty",
             rankingMode: "fixed",
             topN: 10,
+            target: 6,
+            display: 10,
             correctAnswers: [
                 "Burkina Faso",
                 "Mali",
@@ -408,6 +434,8 @@
             description: "Bits will freeze off",
             rankingMode: "fixed",
             topN: 10,
+            target: 6,
+            display: 10,
             correctAnswers: [
                 "Canada",
                 "Russia",
@@ -532,7 +560,7 @@
         },
         {
             id: "films_most_oscar_nominations_best_picture_nominees",
-            poolId: "best_picture_nominees_all_time",
+            poolId: "full_film_list",
             label: "Most Oscar nominations per film",
             title: "Films with the most Oscar nominations",
             description: "So many envelopes",
@@ -565,10 +593,12 @@
         },
         {
             id: "films_most_oscar_wins_best_picture_nominees",
-            poolId: "best_picture_nominees_all_time",
+            poolId: "full_film_list",
             label: "Most Oscar wins per film",
             title: "Films with the most Oscar wins",
             description: "So many speeches",
+            target: 1,
+            display: 15,
             answers: [
                 "Titanic",
                 "Ben-Hur",

@@ -534,6 +534,31 @@ button {
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 6px 16px rgba(0, 0, 0, 0.22);
     }
 
+/* Next Round Button*/
+#randomQuestionBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    line-height: 1;
+    text-align: center;
+}
+
+.next-label {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.next-progress {
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1;
+    opacity: 0.8;
+}
+
 /* Meta bar */
 
 .meta-bar-wrap {

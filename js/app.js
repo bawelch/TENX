@@ -358,6 +358,22 @@
     function getAnswerPoolForCurrentQuestion() {
         return getPool(state.poolId);
     }
+    function getQuestionDisplayCount(question) {
+        return Math.max(1, Number.isInteger(question.display) ? question.display : 10);
+    }
+
+    function getQuestionTarget(question) {
+        return Math.max(0, Number.isInteger(question.target) ? question.target : 0);
+    }
+
+    function getDisplayedCorrectAnswers(question) {
+        const allCorrectAnswers = getCorrectAnswers(question);
+        return allCorrectAnswers.slice(0, getQuestionDisplayCount(question));
+    }
+
+    function getCurrentRoundPoints() {
+        return state.statuses.filter((status) => status === "green" || status === "yellow").length;
+    }
     function getRandomQuestion() {
         const questions = Array.isArray(window.TOP_TEN_QUESTIONS)
             ? window.TOP_TEN_QUESTIONS
@@ -480,7 +496,9 @@
         return state.bankedXp + window.TOP_TEN_SCORING.getDiscoveryScore(state.answerMilestones);
     }
     function initialiseMilestones() {
-        const answers = getCorrectAnswers(getQuestion(state.questionId));
+        const question = getQuestion(state.questionId);
+        const answers = getDisplayedCorrectAnswers(question);
+
         state.answerMilestones = {};
         answers.forEach((answer) => {
             state.answerMilestones[answer] = {
@@ -499,7 +517,7 @@
         return "Locked";
     }
     function resetGame() {
-        const answers = getCorrectAnswers(getQuestion(state.questionId));
+        const answers = getDisplayedCorrectAnswers(getQuestion(state.questionId));
         state.guesses = Array(answers.length).fill("");
         state.statuses = Array(answers.length).fill("empty");
         state.locked = Array(answers.length).fill(false);
@@ -587,7 +605,7 @@
 
     function render() {
         const question = getQuestion(state.questionId);
-        const correctAnswers = getCorrectAnswers(question);
+        const correctAnswers = getDisplayedCorrectAnswers(question);
         const mode = getModeConfig();
         const submitInactive = state.finished;
 
@@ -608,6 +626,17 @@
         <span class="submit-label">Submit</span>
         <span class="submit-hearts">${heartsHtml}</span>
     `;
+
+        const currentPoints = getCurrentRoundPoints();
+        const target = getQuestionTarget(question);
+
+        if (els.randomQuestionBtn) {
+            els.randomQuestionBtn.innerHTML = `
+            <span class="next-label">Next</span>
+            <span class="next-progress">${currentPoints}/${target}</span>
+        `;
+            els.randomQuestionBtn.disabled = false;
+        }
 
         els.submitBtn.disabled = submitInactive;
         els.resetBtn.disabled = submitInactive;
@@ -776,7 +805,7 @@
 
     function renderPickerOptions() {
         const question = getQuestion(state.questionId);
-        const correctAnswers = getCorrectAnswers(question);
+        const correctAnswers = getDisplayedCorrectAnswers(question);
         const options = getAvailableOptions();
 
         els.pickerCount.textContent = `${options.length} answers available`;
@@ -844,7 +873,7 @@
         state.attemptsUsed += 1;
         const turn = state.attemptsUsed;
         const question = getQuestion(state.questionId);
-        const correctAnswers = getCorrectAnswers(question);
+        const correctAnswers = getDisplayedCorrectAnswers(question);
 
         const remainingCounts = {};
         correctAnswers.forEach((answer) => {
@@ -929,7 +958,7 @@
 
     function revealSolution(showIfFailed) {
         const question = getQuestion(state.questionId);
-        const correctAnswers = getCorrectAnswers(question);
+        const correctAnswers = getDisplayedCorrectAnswers(question);
         els.solution.innerHTML = correctAnswers.map((answer, index) => `
       <div class="solution-item"><div><span>${index + 1}.</span> ${escapeHtml(answer)}</div></div>
     `).join("");
