@@ -6,7 +6,7 @@
     const BASE_LEVEL_XP = 100;
     const LEVEL_SCALING = 1.5;
     const MAX_ATTEMPTS = 3;
-    const DEFAULT_START_QUESTION_ID = "films_most_oscar_wins_best_picture_nominees";
+    const DEFAULT_START_QUESTION_ID = "girls_names_mambo5";
     let hasUsedDefaultStartQuestion = false;
 
     const GAME_MODES = {
