@@ -597,7 +597,7 @@
             label: "Most Oscar wins per film",
             title: "Films with the most Oscar wins",
             description: "So many speeches",
-            target: 1,
+            target: 4,
             display: 15,
             answers: [
                 "Titanic",
