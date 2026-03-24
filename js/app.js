@@ -52,6 +52,7 @@
         statuses: [],
         locked: [],
         excludedByIndex: [],
+        yellowExcludedByAnswer: {},
         attemptsUsed: 0,
         eliminated: new Set(),
         priority: new Set(),
@@ -412,25 +413,32 @@
 
         return ranked.slice(0, question.topN).map((entry) => entry.item);
     }
-    function getPickerBadgeText(answer, correctAnswers) {
+    //function getPickerBadgeText(answer, correctAnswers) {
+    //    if (!state.priority.has(answer)) {
+    //        return "";
+    //    }
+
+    //    const currentGuessIndex = state.guesses.indexOf(answer);
+
+    //    if (currentGuessIndex === -1) {
+    //        return "Top 10";
+    //    }
+
+    //    const mainBoxText = getDirectionLabel(answer, currentGuessIndex, correctAnswers);
+
+    //    if (!getModeConfig().directionalHints) {
+    //        return "Top 10";
+    //    }
+
+    //    return `${mainBoxText} than ${currentGuessIndex + 1}`;
+    //}
+    function getPickerBadgeText(answer) {
         if (!state.priority.has(answer)) {
             return "";
         }
-
-        const currentGuessIndex = state.guesses.indexOf(answer);
-
-        if (currentGuessIndex === -1) {
-            return "Top 10";
-        }
-
-        const mainBoxText = getDirectionLabel(answer, currentGuessIndex, correctAnswers);
-
-        if (!getModeConfig().directionalHints) {
-            return "Top 10";
-        }
-
-        return `${mainBoxText} than ${currentGuessIndex + 1}`;
+        return "+++";
     }
+
     function getDirectionLabel(answer, currentIndex, correctAnswers) {
         const mode = getModeConfig();
 
@@ -522,6 +530,7 @@
         state.statuses = Array(answers.length).fill("empty");
         state.locked = Array(answers.length).fill(false);
         state.excludedByIndex = Array.from({ length: answers.length }, () => new Set());
+        state.yellowExcludedByAnswer = {};
         state.attemptsUsed = 0;
         state.eliminated = new Set();
         state.priority = new Set();
@@ -752,9 +761,27 @@
             : new Set();
 
         const options = pool.items.filter((answer) => {
+            // a) any answer ever marked red is globally excluded
             if (state.eliminated.has(answer) && answer !== currentGuess) return false;
+
+            // existing cross-slot uniqueness rule
             if (unavailable.has(answer) && answer !== currentGuess) return false;
+
+            // existing per-position red exclusion rule
             if (excludedHere.has(answer) && answer !== currentGuess) return false;
+
+            // b) yellow answers are excluded from any position
+            // where they have already been submitted this round
+            const yellowExcludedPositions = state.yellowExcludedByAnswer[answer];
+            if (
+                yellowExcludedPositions &&
+                state.activeIndex != null &&
+                yellowExcludedPositions.has(state.activeIndex) &&
+                answer !== currentGuess
+            ) {
+                return false;
+            }
+
             if (!search) return true;
             return answer.toLowerCase().includes(search);
         });
@@ -772,6 +799,7 @@
 
         priority.sort((a, b) => a.localeCompare(b));
         regular.sort((a, b) => a.localeCompare(b));
+
         return [...priority, ...regular];
     }
 
@@ -818,7 +846,7 @@
         els.pickerOptions.innerHTML = options.map((answer) => `
       <button class="option" data-answer="${escapeHtml(answer)}" type="button">
         <span>${escapeHtml(answer)}</span>
-        <span class="option-badge">${getPickerBadgeText(answer, correctAnswers)}</span>
+        <span class="option-badge">${getPickerBadgeText(answer)}</span>
       </button>
     `).join("");
 
@@ -902,6 +930,11 @@
                 state.statuses[index] = "yellow";
                 state.priority.add(guess);
                 remainingCounts[guess] -= 1;
+
+                if (!state.yellowExcludedByAnswer[guess]) {
+                    state.yellowExcludedByAnswer[guess] = new Set();
+                }
+                state.yellowExcludedByAnswer[guess].add(index);
 
                 if (state.answerMilestones[guess] && !state.answerMilestones[guess].firstYellowTurn) {
                     state.answerMilestones[guess].firstYellowTurn = turn;
