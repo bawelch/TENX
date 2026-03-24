@@ -13,7 +13,7 @@
         classic_plus: {
             id: "classic_plus",
             label: "Classic+",
-            description: "Top-10 hint only. No scoring.",
+            description: "Top-10 hint only. No scoring",
             scoring: false,
             directionalHints: false,
             debugTools: false
@@ -21,7 +21,7 @@
         modern: {
             id: "modern",
             label: "Modern",
-            description: "Classic+ with scoring.",
+            description: "Classic+ with scoring",
             scoring: true,
             directionalHints: false,
             debugTools: false
@@ -29,7 +29,7 @@
         modern_plus: {
             id: "modern_plus",
             label: "Modern+",
-            description: "Scoring plus higher/lower hints.",
+            description: "Scoring plus higher/lower hints",
             scoring: true,
             directionalHints: true,
             debugTools: false
@@ -37,7 +37,7 @@
         debug: {
             id: "debug",
             label: "Debug",
-            description: "Modern+ with answer-pool controls, question selection, random question, and detailed breakdowns.",
+            description: "The safe option right now",
             scoring: true,
             directionalHints: true,
             debugTools: true
@@ -218,6 +218,20 @@
         state.bankedCoins += roundBoardScore;
         state.bankedXp += roundDiscoveryScore;
         state.roundBanked = true;
+    }
+    function getRoundDelta(question) {
+        return getCurrentRoundPoints() - getQuestionTarget(question);
+    }
+
+    function getNextButtonWordFromDelta(delta) {
+        const words = window.TOP_TEN_META_SCALES?.nextButtonWords || [];
+
+        if (!words.length) {
+            return "Average";
+        }
+
+        const clamped = Math.max(-10, Math.min(10, delta));
+        return words[clamped + 10];
     }
     function renderMetaBar() {
         const totalCoins = getCoinsTotal();
@@ -636,14 +650,14 @@
         <span class="submit-hearts">${heartsHtml}</span>
     `;
 
-        const currentPoints = getCurrentRoundPoints();
-        const target = getQuestionTarget(question);
+        const roundDelta = getRoundDelta(question);
+        const nextWord = getNextButtonWordFromDelta(roundDelta);
 
         if (els.randomQuestionBtn) {
             els.randomQuestionBtn.innerHTML = `
-            <span class="next-label">Next</span>
-            <span class="next-progress">${currentPoints}/${target}</span>
-        `;
+        <span class="next-label">${nextWord}</span>
+        <span class="next-progress">${roundDelta > 0 ? `+${roundDelta}` : roundDelta}</span>
+    `;
             els.randomQuestionBtn.disabled = false;
         }
 
@@ -811,8 +825,8 @@
         state.activeIndex = index;
         els.pickerTitle.textContent = `Choose answer for rank ${index + 1}`;
         els.pickerSubtitle.textContent = mode.directionalHints
-            ? "Prioritised answers are shared across all active ranks. Yellow hints show higher or lower."
-            : "Prioritised answers are shared across all active ranks. Yellow hints only confirm top-10 membership.";
+            ? "Make it a good 'un"
+            : "Maybe the top ones, maybe not.";
         els.pickerSearch.value = "";
         els.pickerOverlay.classList.add("show");
 
@@ -836,10 +850,10 @@
         const correctAnswers = getDisplayedCorrectAnswers(question);
         const options = getAvailableOptions();
 
-        els.pickerCount.textContent = `${options.length} answers available`;
+        els.pickerCount.textContent = `${options.length} answers left`;
 
         if (!options.length) {
-            els.pickerOptions.innerHTML = `<div class="empty-search">No supplied answers match that search.</div>`;
+            els.pickerOptions.innerHTML = `<div class="empty-search">Not available.</div>`;
             return;
         }
 
