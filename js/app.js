@@ -6,7 +6,7 @@
     const BASE_LEVEL_XP = 100;
     const LEVEL_SCALING = 1.5;
     const MAX_ATTEMPTS = 3;
-    const DEFAULT_START_QUESTION_ID = "full_film_list_highest_ranked";
+    const DEFAULT_START_QUESTION_ID = "random";
     let hasUsedDefaultStartQuestion = false;
 
     const GAME_MODES = {
