@@ -13,7 +13,7 @@ window.TOP_TEN_META_SCALES = {
         "Average",     // 0
         "Decent",      // 1
         "Solid",       // 2
-        "Tidy",        // 3
+        "Sweet",        // 3
         "Strong",      // 4
         "Sharp",       // 5
         "Cracking",    // 6
