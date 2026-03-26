@@ -68,9 +68,14 @@
         hasAdvancedAtLeastOnce: false,
         roundHpApplied: false,
         nextGlowActive: false,
+        activeRound: 1,
+        endRound: 10,
     };
 
     const els = {
+        eventBarBtn: document.getElementById("eventBarBtn"),
+        eventBarFill: document.getElementById("eventBarFill"),
+        eventBarText: document.getElementById("eventBarText"),
         gameTitleBtn: document.getElementById("gameTitleBtn"),
         xpScore: document.getElementById("xpScore"),
         healthBar: document.getElementById("healthBar"),
@@ -183,6 +188,31 @@
         }
 
         return getRandomQuestion();
+    }
+    function getEventProgressPct() {
+        if (state.endRound <= 0) return 0;
+        return Math.max(0, Math.min(100, (state.activeRound / state.endRound) * 100));
+    }
+
+    function getEventTextForRound(activeRound, endRound) {
+        const events = window.TOP_TEN_EVENTS || [];
+        if (!events.length) {
+            return "";
+        }
+
+        const pct = endRound > 0 ? Math.max(0, Math.min(1, activeRound / endRound)) : 0;
+        const index = Math.min(events.length - 1, Math.floor(pct * events.length));
+        return events[index];
+    }
+
+    function getEventFillColor(progressPct) {
+        const t = Math.max(0, Math.min(100, progressPct)) / 100;
+
+        const lightBlue = { r: 96, g: 165, b: 250 };
+        const darkBlue = { r: 29, g: 78, b: 216 };
+
+        const color = interpolateRgb(lightBlue, darkBlue, t);
+        return `rgba(${color.r}, ${color.g}, ${color.b}, 0.95)`;
     }
     function getTitlePhraseForLevel(level) {
         const phrases = window.TOP_TEN_LEVEL_TEXT || [];
@@ -342,6 +372,19 @@
             currentThreshold,
             nextThreshold
         };
+    }
+    function renderEventBar() {
+        const progressPct = getEventProgressPct();
+        const eventText = getEventTextForRound(state.activeRound, state.endRound);
+
+        if (els.eventBarText) {
+            els.eventBarText.textContent = `QUIZ ${state.activeRound} ${eventText ? ` - ${eventText}` : ""}`;
+        }
+
+        if (els.eventBarFill) {
+            els.eventBarFill.style.width = `${progressPct}%`;
+            els.eventBarFill.style.backgroundColor = getEventFillColor(progressPct);
+        }
     }
     function renderHealthBar() {
         const hpPercent = state.maxHp > 0 ? (state.hp / state.maxHp) * 100 : 0;
@@ -611,7 +654,12 @@
         render();
         closePicker();
     }
-
+    function resetRunMetaProgress() {
+        state.score = 0;
+        state.hasAdvancedAtLeastOnce = false;
+        state.bankedCoins = 0;
+        state.eliminated = new Set();
+    }
     function setMessage(text, type) {
         els.message.textContent = text;
         els.message.className = `message ${type || ""}`.trim();
@@ -641,33 +689,40 @@
             resetGame();
         });
 
-        els.randomQuestionBtn.addEventListener("click", () => {
-            if (!getModeConfig().debugTools) return;
+els.randomQuestionBtn.addEventListener("click", () => {
+    if (!getModeConfig().debugTools) return;
 
-            const currentQuestion = getQuestion(state.questionId);
-            if (currentQuestion) {
-                state.score += getScoreDelta(currentQuestion);
-                state.hasAdvancedAtLeastOnce = true;
-            }
+    const currentQuestion = getQuestion(state.questionId);
+    if (currentQuestion) {
+        state.score += getScoreDelta(currentQuestion);
+        state.hasAdvancedAtLeastOnce = true;
+    }
 
-            state.nextGlowActive = false;
-            bankCurrentRoundScores();
+    state.nextGlowActive = false;
+    bankCurrentRoundScores();
 
-            const next = getRandomQuestion();
-            if (!next) return;
+    state.activeRound += 1;
 
-            state.questionId = next.id;
-            state.poolId = next.poolId;
+    if (state.activeRound > state.endRound) {
+        state.activeRound = 1;
+        resetRunMetaProgress();
+    }
 
-            buildPoolSelect();
-            rebuildQuestionsForCurrentPool();
-            buildQuestionSelect();
+    const next = getRandomQuestion();
+    if (!next) return;
 
-            els.poolSelect.value = state.poolId;
-            els.questionSelect.value = state.questionId;
+    state.questionId = next.id;
+    state.poolId = next.poolId;
 
-            resetGame();
-        });
+    buildPoolSelect();
+    rebuildQuestionsForCurrentPool();
+    buildQuestionSelect();
+
+    els.poolSelect.value = state.poolId;
+    els.questionSelect.value = state.questionId;
+
+    resetGame();
+});
 
         els.submitBtn.addEventListener("click", submitGuesses);
         els.resetBtn.addEventListener("click", (event) => {
@@ -693,6 +748,7 @@
         const mode = getModeConfig();
         const submitInactive = state.finished;
 
+        renderEventBar();
         renderHealthBar();
         renderMetaBar();
 

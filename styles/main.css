@@ -238,6 +238,73 @@ button {
     .submit-heart.empty {
         opacity: 0.7;
     }
+
+
+/* Event Bar*/
+.event-bar-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 28px;
+    margin-bottom: 6px;
+    padding: 3px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background: rgba(20, 24, 31, 0.95);
+}
+
+.event-bar-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    background: rgba(96, 165, 250, 0.95);
+    pointer-events: none;
+    transition: width 0.25s ease, background-color 0.25s ease;
+}
+
+.event-bar-button {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 22px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    appearance: none;
+    background: rgba(20, 24, 31, 0.75);
+    color: inherit;
+    cursor: default;
+}
+
+    .event-bar-button:focus {
+        outline: none;
+    }
+
+    .event-bar-button:hover,
+    .event-bar-button:active {
+        background: rgba(20, 24, 31, 0.95);
+    }
+
+.event-bar-text {
+    display: block;
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 0.78rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-align: left;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+
+
 /* Game title / level bar */
 
 .game-title-wrap {
