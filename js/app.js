@@ -20,7 +20,7 @@
         },
         modern: {
             id: "modern",
-            label: "Modern",
+            label: "IgnoreThis",
             description: "Classic+ with scoring",
             scoring: true,
             directionalHints: false,
