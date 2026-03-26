@@ -608,7 +608,10 @@ button {
         width: 50%;
         flex: 0 0 50%;
     }
-
+    .meta-bar.three-up .meta-stat {
+        width: 33.3333%;
+        flex: 0 0 33.3333%;
+    }
 .meta-stat {
     display: flex;
     align-items: center;

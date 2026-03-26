@@ -64,7 +64,10 @@
         maxHp: 100,
         bankedCoins: 0,
         bankedXp: 250,
-        roundHpApplied: false, nextGlowActive: false,
+        score: 0,
+        hasAdvancedAtLeastOnce: false,
+        roundHpApplied: false,
+        nextGlowActive: false,
     };
 
     const els = {
@@ -87,8 +90,8 @@
         message: document.getElementById("message"),
         gameTitle: document.getElementById("gameTitle"),
         titleLevelFill: document.getElementById("titleLevelFill"),
+        scoreValue: document.getElementById("scoreValue"),
         accuracyScore: document.getElementById("accuracyScore"),
-        eliminatedCount: document.getElementById("eliminatedCount"),
         totalScore: document.getElementById("totalScore"),
         scoringDetail: document.getElementById("scoringDetail"),
         solutionWrap: document.getElementById("solutionWrap"),
@@ -107,7 +110,25 @@
     function getModeConfig() {
         return GAME_MODES[state.mode];
     }
+    function getScoreDelta(question) {
+        return getCurrentRoundPoints() - getQuestionTarget(question);
+    }
 
+    function getScoreDisplayText() {
+        if (!state.hasAdvancedAtLeastOnce && state.score === 0) {
+            return "Get Ready";
+        }
+
+        if (state.score > 0) {
+            return `${state.score} Ahead`;
+        }
+
+        if (state.score < 0) {
+            return `${Math.abs(state.score)} Behind`;
+        }
+
+        return "0";
+    }
     function normaliseText(value) {
         return value.toLowerCase().replace(/[^a-z]/g, "");
     }
@@ -237,10 +258,10 @@
         const totalCoins = getCoinsTotal();
         const totalXp = getXpTotal();
         const levelInfo = getLevelInfo(totalXp);
-        const accuracy = getAccuracyScore();
 
         els.totalScore.textContent = String(totalCoins);
-        els.accuracyScore.textContent = `${getAccuracyScore().toFixed(2)}%`;
+        els.accuracyScore.textContent = `${Math.round(getAccuracyScore())}%`;
+        els.scoreValue.textContent = getScoreDisplayText();
 
         if (els.gameTitle) {
             const titlePhrase = getTitlePhraseForLevel(levelInfo.level);
@@ -623,6 +644,13 @@
         els.randomQuestionBtn.addEventListener("click", () => {
             if (!getModeConfig().debugTools) return;
 
+            const currentQuestion = getQuestion(state.questionId);
+            if (currentQuestion) {
+                state.score += getScoreDelta(currentQuestion);
+                state.hasAdvancedAtLeastOnce = true;
+            }
+
+            state.nextGlowActive = false;
             bankCurrentRoundScores();
 
             const next = getRandomQuestion();
@@ -632,6 +660,7 @@
             state.poolId = next.poolId;
 
             buildPoolSelect();
+            rebuildQuestionsForCurrentPool();
             buildQuestionSelect();
 
             els.poolSelect.value = state.poolId;
@@ -682,13 +711,13 @@
         <span class="submit-hearts">${heartsHtml}</span>
     `;
 
-        const roundDelta = getRoundDelta(question);
-        const nextWord = getNextButtonWordFromDelta(roundDelta);
+        const scoreDelta = getScoreDelta(question);
+        const nextWord = getNextButtonWordFromDelta(scoreDelta);
 
         if (els.randomQuestionBtn) {
             els.randomQuestionBtn.innerHTML = `
         <span class="next-label">${nextWord}</span>
-        <span class="next-progress">${roundDelta > 0 ? `+${roundDelta}` : roundDelta}</span>
+        <span class="next-progress">${scoreDelta > 0 ? `+${scoreDelta}` : scoreDelta}</span>
     `;
             els.randomQuestionBtn.disabled = false;
             els.randomQuestionBtn.classList.toggle("next-glow", state.nextGlowActive);
@@ -1074,7 +1103,7 @@
             state.questionId = startQuestion.id;
             state.poolId = startQuestion.poolId;
         }
-        rebuildQuestionsForCurrentPool();5
+        rebuildQuestionsForCurrentPool();
         buildPoolSelect();
         buildQuestionSelect();
         bindEvents();
