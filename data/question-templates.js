@@ -47,14 +47,15 @@ window.TOP_TEN_QUESTION_TEMPLATES = [
   //  sortDirection: "desc",
   //  metric: "repeatedLetters"
   //},
-  {
-    id: "scrabble_desc",
-    label: "Highest Scrabble score",
-    promptBuilder: (pool) => `Top 10 ${pool.pluralLabel} by Scrabble value`,
-    description: "Standard English Scrabble letter values.",
-    sortDirection: "desc",
-    metric: "scrabble"
-  }
+    {
+        id: "scrabble_desc",
+        label: "Highest Scrabble score",
+        promptBuilder: (pool) => `Top 10 ${pool.pluralLabel} by Scrabble value`,
+        description: "Standard English Scrabble letter values.",
+        sortDirection: "desc",
+        metric: "scrabble",
+        allowedPoolIds: ["countries_all", "us_states"]
+    }
   //{
   //  id: "alphabetical_asc",
   //  label: "Alphabetically earliest",
@@ -80,3 +81,25 @@ window.TOP_TEN_QUESTION_TEMPLATES = [
   //  metric: "words"
   //}
 ];
+
+window.buildTemplateQuestionsForPool = function buildTemplateQuestionsForPool(poolId) {
+    const pool = window.TOP_TEN_QUESTION_POOL_MAP[poolId];
+    if (!pool) {
+        return [];
+    }
+
+    return window.TOP_TEN_QUESTION_TEMPLATES
+        .filter((template) => Array.isArray(template.allowedPoolIds) && template.allowedPoolIds.includes(poolId))
+        .map((template) => ({
+            id: `${pool.id}_${template.id}`,
+            poolId: pool.id,
+            label: template.label,
+            title: template.promptBuilder(pool),
+            description: template.description,
+            sortDirection: template.sortDirection,
+            metric: template.metric,
+            topN: 10,
+            target: 0,
+            display: 10
+        }));
+};

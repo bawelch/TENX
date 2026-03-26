@@ -6,7 +6,7 @@
     const BASE_LEVEL_XP = 100;
     const LEVEL_SCALING = 1.5;
     const MAX_ATTEMPTS = 3;
-    const DEFAULT_START_QUESTION_ID = "random";
+    const DEFAULT_START_QUESTION_ID = "girls_forenames_1984";
     let hasUsedDefaultStartQuestion = false;
 
     const GAME_MODES = {
@@ -480,7 +480,17 @@
 
         return actualIndex < currentIndex ? "Higher" : "Lower";
     }
+    function rebuildQuestionsForCurrentPool() {
+        const templateQuestions = window.buildTemplateQuestionsForPool
+            ? window.buildTemplateQuestionsForPool(state.poolId)
+            : [];
 
+        window.TOP_TEN_QUESTIONS = templateQuestions;
+
+        if (typeof window.appendManualQuestions === "function") {
+            window.appendManualQuestions();
+        }
+    }
     function buildModeSelect() {
         els.modeSelect.innerHTML = Object.values(GAME_MODES)
             .map((mode) => `<option value="${mode.id}">${mode.label}</option>`)
@@ -499,9 +509,16 @@
 
     function buildQuestionSelect() {
         const questions = getQuestionsForPool(state.poolId);
+
         els.questionSelect.innerHTML = questions
             .map((question) => `<option value="${question.id}">${question.label}</option>`)
             .join("");
+
+        if (!questions.length) {
+            state.questionId = null;
+            els.questionCount.textContent = `0 questions in this pool`;
+            return;
+        }
 
         if (!state.questionId || !questions.some((question) => question.id === state.questionId)) {
             state.questionId = questions[0].id;
@@ -575,7 +592,9 @@
 
         els.poolSelect.addEventListener("change", (event) => {
             if (!getModeConfig().debugTools) return;
+
             state.poolId = event.target.value;
+            rebuildQuestionsForCurrentPool();
             buildQuestionSelect();
             bankCurrentRoundScores();
             resetGame();
@@ -1036,7 +1055,7 @@
             state.questionId = startQuestion.id;
             state.poolId = startQuestion.poolId;
         }
-
+        rebuildQuestionsForCurrentPool();5
         buildPoolSelect();
         buildQuestionSelect();
         bindEvents();
