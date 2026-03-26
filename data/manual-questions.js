@@ -386,6 +386,8 @@
             label: "Most populated cities",
             title: "Most populated cities in the world",
             description: "People magnets",
+            target: 6,
+            display: 10,
             answers: [
                 "Jakarta",
                 "Dhaka",
@@ -418,6 +420,8 @@
             label: "Best-selling albums",
             title: "Top 10 best-selling albums of all time",
             description: "Streaming killed the video star",
+            target: 5,
+            display: 10,
             answers: [
                 "Thriller",
                 "The Dark Side Of The Moon",
@@ -449,6 +453,8 @@
             label: "Most Oscar nominations per film",
             title: "Films with the most Oscar nominations",
             description: "So many envelopes",
+            target: 5,
+            display: 11,
             answers: [
                 "Sinners",
                 "All About Eve",
@@ -482,7 +488,7 @@
             label: "Most Oscar wins per film",
             title: "Films with the most Oscar wins",
             description: "So many speeches",
-            target: 4,
+            target: 5,
             display: 15,
             answers: [
                 "Titanic",

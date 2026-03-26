@@ -397,21 +397,35 @@ button {
     background: rgba(220, 38, 38, 0.22);
 }
 
-.state-yellow .rank,
+/*.state-yellow .rank,
 .state-yellow .slot {
     border-color: #facc15;
     background: rgba(202, 138, 4, 0.18);
+}*/
+
+.state-yellow .rank {
+    border-color: #facc15;
+    background: rgba(202, 138, 4, 0.12);
 }
 
-.state-green .rank,
+.state-yellow .slot {
+    border-color: #facc15;
+    background: linear-gradient( 90deg, rgba(202, 138, 4, 0.52) 0%, rgba(202, 138, 4, 0.28) 40%, rgba(202, 138, 4, 0.10) 70%, rgba(202, 138, 4, 0.00) 100% ), rgba(11, 16, 32, 0.78);
+}
+
+.state-green .rank {
+    border-color: #22c55e;
+    background: rgba(22, 163, 74, 0.12);
+}
+
 .state-green .slot {
     border-color: #22c55e;
-    background: rgba(22, 163, 74, 0.18);
+    background: linear-gradient( 90deg, rgba(22, 163, 74, 0.50) 0%, rgba(22, 163, 74, 0.26) 40%, rgba(22, 163, 74, 0.10) 70%, rgba(22, 163, 74, 0.00) 100% ), rgba(11, 16, 32, 0.78);
 }
 
 .state-empty.state-preyellow .slot {
     border-color: #facc15;
-    background: linear-gradient( 90deg, rgba(202, 138, 4, 0.52) 0%, rgba(202, 138, 4, 0.28) 40%, rgba(202, 138, 4, 0.10) 70%, rgba(202, 138, 4, 0.00) 100% ), rgba(11, 16, 32, 0.78);
+    background: rgba(202, 138, 4, 0.10);
 }
 .state-empty.state-preyellow .rank {
     border-color: #facc15;

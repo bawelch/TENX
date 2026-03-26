@@ -116,18 +116,18 @@
 
     function getScoreDisplayText() {
         if (!state.hasAdvancedAtLeastOnce && state.score === 0) {
-            return "Get Ready";
+            return "...";
         }
 
         if (state.score > 0) {
-            return `${state.score} Ahead`;
+            return `+${state.score}`;
         }
 
         if (state.score < 0) {
-            return `${Math.abs(state.score)} Behind`;
+            return `-${Math.abs(state.score)}`;
         }
 
-        return "0";
+        return "=";
     }
     function normaliseText(value) {
         return value.toLowerCase().replace(/[^a-z]/g, "");
