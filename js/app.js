@@ -69,7 +69,7 @@
         roundHpApplied: false,
         nextGlowActive: false,
         activeRound: 1,
-        endRound: 10,
+        endRound: 5,
     };
 
     const els = {
@@ -374,11 +374,18 @@
         };
     }
     function renderEventBar() {
+        const question = getQuestion(state.questionId);
         const progressPct = getEventProgressPct();
         const eventText = getEventTextForRound(state.activeRound, state.endRound);
 
+        const questionTitle = question?.title || "";
+        const suffix = eventText ? ` - ${eventText}` : "";
+        const prefix = `ROUND ${state.activeRound}`;
+
         if (els.eventBarText) {
-            els.eventBarText.textContent = `QUIZ ${state.activeRound} ${eventText ? ` - ${eventText}` : ""}`;
+            els.eventBarText.textContent = questionTitle
+                ? `${prefix} - ${questionTitle}${suffix}`
+                : `${prefix}${suffix}`;
         }
 
         if (els.eventBarFill) {
@@ -752,7 +759,8 @@ els.randomQuestionBtn.addEventListener("click", () => {
         renderHealthBar();
         renderMetaBar();
 
-        els.title.textContent = question.title;
+        els.title.textContent = "";
+        els.title.style.display = "none";
         els.subtitle.textContent = question.description;
 
         const heartsRemaining = Math.max(0, MAX_ATTEMPTS - state.attemptsUsed);
@@ -768,7 +776,45 @@ els.randomQuestionBtn.addEventListener("click", () => {
     `;
 
         const scoreDelta = getScoreDelta(question);
-        const nextWord = getNextButtonWordFromDelta(scoreDelta);
+        const isEventComplete = state.activeRound >= state.endRound;
+
+        let nextWord;
+        if (isEventComplete) {
+            if (scoreDelta > 0) {
+                nextWord = "Winner";
+            } else if (scoreDelta < 0) {
+                nextWord = "Loser";
+            } else {
+                nextWord = "Draw";
+            }
+        } else {
+            nextWord = getNextButtonWordFromDelta(scoreDelta);
+        }
+
+        if (els.randomQuestionBtn) {
+            els.randomQuestionBtn.innerHTML = `
+        <span class="next-label">${nextWord}</span>
+        <span class="next-progress">${isEventComplete ? "" : (scoreDelta > 0 ? `+${scoreDelta}` : scoreDelta)}</span>
+    `;
+            els.randomQuestionBtn.disabled = false;
+            els.randomQuestionBtn.classList.toggle("next-glow", state.nextGlowActive);
+
+            els.randomQuestionBtn.classList.remove(
+                "next-outcome-win",
+                "next-outcome-draw",
+                "next-outcome-loss"
+            );
+
+            if (isEventComplete) {
+                if (scoreDelta > 0) {
+                    els.randomQuestionBtn.classList.add("next-outcome-win");
+                } else if (scoreDelta < 0) {
+                    els.randomQuestionBtn.classList.add("next-outcome-loss");
+                } else {
+                    els.randomQuestionBtn.classList.add("next-outcome-draw");
+                }
+            }
+        }
 
         if (els.randomQuestionBtn) {
             els.randomQuestionBtn.innerHTML = `
