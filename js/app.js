@@ -480,6 +480,18 @@
 
         return actualIndex < currentIndex ? "Higher" : "Lower";
     }
+    function isPrevalidatedYellowGuess(answer, index) {
+        if (!answer) return false;
+        if (state.statuses[index] !== "empty") return false;
+        if (!state.priority.has(answer)) return false;
+
+        const excludedPositions = state.yellowExcludedByAnswer[answer];
+        if (excludedPositions && excludedPositions.has(index)) {
+            return false;
+        }
+
+        return true;
+    }
     function rebuildQuestionsForCurrentPool() {
         const templateQuestions = window.buildTemplateQuestionsForPool
             ? window.buildTemplateQuestionsForPool(state.poolId)
@@ -705,7 +717,7 @@
             const guess = state.guesses[index];
             const status = state.statuses[index];
             const locked = state.locked[index];
-
+            const prevalidatedYellow = isPrevalidatedYellowGuess(guess, index);
             const statusText = isFailedReveal && status !== "green"
                 ? `${correctAnswers[index]}${getCorrectTagText(question, index) !== "Locked" ? ` - ${getCorrectTagText(question, index)}` : ""}`
                 : status === "green"
@@ -717,6 +729,9 @@
                             : "";
 
             const classes = [`state-${status}`];
+            if (prevalidatedYellow) {
+                classes.push("state-preyellow");
+            }
             if (status !== "empty" || (isFailedReveal && status !== "green")) {
                 classes.push("has-status");
             }

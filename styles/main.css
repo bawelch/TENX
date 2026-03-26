@@ -409,6 +409,27 @@ button {
     background: rgba(22, 163, 74, 0.18);
 }
 
+.state-empty.state-preyellow .slot {
+    border-color: #facc15;
+    background: linear-gradient( 90deg, rgba(202, 138, 4, 0.52) 0%, rgba(202, 138, 4, 0.28) 40%, rgba(202, 138, 4, 0.10) 70%, rgba(202, 138, 4, 0.00) 100% ), rgba(11, 16, 32, 0.78);
+}
+.state-empty.state-preyellow .rank {
+    border-color: #facc15;
+    background: rgba(202, 138, 4, 0.12);
+}
+
+.state-empty.state-preyellow .slot-text {
+    color: #ffffff;
+}
+
+.state-preyellow .rank,
+.state-preyellow .slot {
+    border-color: #facc15;
+}
+
+.state-preyellow .slot {
+    background: linear-gradient( 90deg, rgba(202, 138, 4, 0.42) 0%, rgba(202, 138, 4, 0.22) 45%, rgba(202, 138, 4, 0.08) 72%, rgba(202, 138, 4, 0.00) 100% ), rgba(11, 16, 32, 0.78);
+}
 /* Health / controls bar */
 .health-track {
     z-index: 0;
