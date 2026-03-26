@@ -64,7 +64,7 @@
         maxHp: 100,
         bankedCoins: 0,
         bankedXp: 250,
-        roundHpApplied: false,
+        roundHpApplied: false, nextGlowActive: false,
     };
 
     const els = {
@@ -571,6 +571,7 @@
         state.roundHpApplied = false;
         state.roundScored = false;
         state.roundBanked = false;
+        state.nextGlowActive = false;
         initialiseMilestones();
         els.solutionWrap.classList.remove("show");
         setMessage("", "");
@@ -678,6 +679,7 @@
         <span class="next-progress">${roundDelta > 0 ? `+${roundDelta}` : roundDelta}</span>
     `;
             els.randomQuestionBtn.disabled = false;
+            els.randomQuestionBtn.classList.toggle("next-glow", state.nextGlowActive);
         }
 
         els.submitBtn.disabled = submitInactive;
@@ -993,6 +995,7 @@
             state.solved = true;
             state.finished = true;
             applyRoundHpChange();
+            state.nextGlowActive = true;
             revealSolution(false);
             setMessage(
                 mode.scoring
@@ -1003,6 +1006,7 @@
         } else if (attemptsLeft === 0) {
             state.finished = true;
             applyRoundHpChange();
+            state.nextGlowActive = true;
             revealSolution(true);
             setMessage(
                 mode.scoring
